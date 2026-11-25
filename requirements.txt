@@ -9,6 +9,7 @@ transformers==5.22.2
 
 # Search interface and figures
 streamlit==1.67.0
+altair==6.3.0
 matplotlib==3.11.2
 pillow==13.0.0
 
