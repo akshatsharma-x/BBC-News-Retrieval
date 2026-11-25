@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BBC News Retrieval — lexical, semantic and hybrid search</title>
+<meta name="description" content="Information-retrieval project on the BBC News corpus: TF-IDF, BM25, a Sentence Transformer and Reciprocal Rank Fusion, with a graded test collection, full evaluation and a live search app.">
+<meta property="og:title" content="BBC News Retrieval">
+<meta property="og:description" content="Lexical, semantic and hybrid search over 2,126 BBC News articles, with a live search app.">
+<meta property="og:image" content="assets/ui_search.webp">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<nav class="top" aria-label="Sections"><div class="wrap">
+  <a class="brand" href="#">BBC News <em>Retrieval</em></a>
+  <ul><li><a href="#models">Models</a></li><li><a href="#results">Results</a></li><li><a href="#interface">Interface</a></li>
+  <li><a href="#how">How it works</a></li><li><a href="#documents">Documents</a></li><li><a href="#run">Run it</a></li></ul>
+  <a class="btn primary" href="https://bbc-news-retrieval.streamlit.app" target="_blank" rel="noopener">Live app ↗</a>
+</div></nav>
+<main class="wrap">
+<header class="hero">
+  <span class="kicker">Information Retrieval · Project 12</span>
+  <h1>BBC News <em>Retrieval</em></h1>
+  <div class="rule"></div>
+  <p class="lede">Lexical, semantic and hybrid search over 2,126 BBC News stories from 2004–2005. Four rankers
+  share one inverted index, and a purpose-built, graded test collection measures which one finds the right articles.</p>
+  <div class="cta">
+    <a class="btn primary" href="https://bbc-news-retrieval.streamlit.app" target="_blank" rel="noopener">Open the live search app ↗</a>
+    <a class="btn" href="https://github.com/akshatsharma-x/BBC-News-Retrieval" target="_blank" rel="noopener">View the code on GitHub</a>
+    <a class="btn" href="BBC_News_Retrieval_Report.pdf">Read the report (PDF)</a>
+  </div>
+  <p class="note">The live app runs on Streamlit Community Cloud. If nobody has used it for a while it sleeps, and the
+  first visit takes about a minute to wake it.</p>
+  <div class="ticker"><span><b>2,126</b> articles</span><span><b>5</b> news desks</span>
+  <span><b>20,485</b> index terms</span><span><b>7,146</b> embedded passages</span>
+  <span><b>4</b> ranking models</span><span><b>≈4 ms</b> per hybrid query</span></div>
+</header>
+<div class="frame"><div class="bar"><i></i><i></i><i></i><span>bbc-news-retrieval · search</span></div><img src="assets/ui_search.webp" width="1600" height="1740" loading="lazy" alt="The search app: Hybrid RRF results for the query films that took the most money at cinemas, with highlighted terms"></div>
+
+<section id="models">
+  <span class="kicker">Four ways to rank</span>
+  <h2>Exact words, meaning, or both</h2>
+  <p class="sub">The same preprocessing pipeline (cleaning, tokenisation, stop words, Porter stemming) feeds an inverted index for the
+  lexical models; the neural encoder reads the raw text.</p>
+  <div class="grid4"><div class="card" style="--model:#3987e5"><div class="stripe"></div><h3>TF-IDF</h3><p class="k">Vector-space model</p><p>Sublinear TF × smoothed IDF weights, L2-normalised, ranked by cosine similarity.</p></div><div class="card" style="--model:#d95926"><div class="stripe"></div><h3>BM25</h3><p class="k">Probabilistic model</p><p>Okapi BM25 (k₁ = 1.2, b = 0.75) scored term-at-a-time from the inverted index.</p></div><div class="card" style="--model:#199e70"><div class="stripe"></div><h3>Sentence Transformer</h3><p class="k">Dense bi-encoder</p><p>all-MiniLM-L6-v2 embeddings of 7,146 passages; an article scores as its best passage.</p></div><div class="card" style="--model:#c98500"><div class="stripe"></div><h3>Hybrid RRF</h3><p class="k">Rank fusion</p><p>Reciprocal Rank Fusion of BM25 and the Sentence Transformer (k = 60) — no score calibration needed.</p></div></div>
+</section>
+
+<section id="results">
+  <span class="kicker">Results</span>
+  <h2>Fusion is the most robust ranker</h2>
+  <p class="sub">Hybrid RRF ties the Sentence Transformer on topical search and beats every model on finding an article from its
+  headline. On paraphrased queries the lexical models fall to MAP 0.665 (BM25) while the
+  Sentence Transformer holds 0.850.</p>
+  <div class="kpis"><div class="kpi" style="--model:#c98500"><div class="v">0.811</div><div class="l">Best MAP · 25 topics</div><div class="w"><span class="dot"></span>Hybrid RRF</div></div><div class="kpi" style="--model:#199e70"><div class="v">0.827</div><div class="l">Best nDCG@10</div><div class="w"><span class="dot"></span>Sentence Transformer</div></div><div class="kpi" style="--model:#c98500"><div class="v">0.992</div><div class="l">Best Recall@100</div><div class="w"><span class="dot"></span>Hybrid RRF</div></div><div class="kpi" style="--model:#c98500"><div class="v">0.812</div><div class="l">Known-item MRR · 2,066 queries</div><div class="w"><span class="dot"></span>Hybrid RRF</div></div></div>
+  <div class="grid2">
+    <div class="panel"><h3>25 graded topics</h3><p class="s">Macro-average · best value per column in bold</p><table><thead><tr><th>Model</th><th>P@10</th><th>Recall@100</th><th>MAP</th><th>nDCG@10</th></tr></thead><tbody><tr><td><span class="dot" style="--model:#3987e5;margin-right:9px"></span>TF-IDF</td><td class="">0.6520</td><td class="">0.9364</td><td class="">0.7051</td><td class="">0.7200</td></tr><tr><td><span class="dot" style="--model:#d95926;margin-right:9px"></span>BM25</td><td class="">0.6560</td><td class="">0.9431</td><td class="">0.7241</td><td class="">0.7396</td></tr><tr><td><span class="dot" style="--model:#199e70;margin-right:9px"></span>Sentence Transformer</td><td class="best">0.7480</td><td class="">0.9763</td><td class="">0.8101</td><td class="best">0.8270</td></tr><tr><td><span class="dot" style="--model:#c98500;margin-right:9px"></span>Hybrid RRF</td><td class="">0.7240</td><td class="best">0.9924</td><td class="best">0.8108</td><td class="">0.8135</td></tr></tbody></table></div>
+    <div class="panel"><h3>2,066 known-item queries</h3><p class="s">Find an article from its headline (headline removed from the index)</p><table><thead><tr><th>Model</th><th>MRR</th><th>Success@1</th><th>Recall@10</th><th>nDCG@10</th></tr></thead><tbody><tr><td><span class="dot" style="--model:#3987e5;margin-right:9px"></span>TF-IDF</td><td class="">0.7530</td><td class="">0.6447</td><td class="">0.9361</td><td class="">0.7956</td></tr><tr><td><span class="dot" style="--model:#d95926;margin-right:9px"></span>BM25</td><td class="">0.7913</td><td class="">0.6951</td><td class="">0.9506</td><td class="">0.8286</td></tr><tr><td><span class="dot" style="--model:#199e70;margin-right:9px"></span>Sentence Transformer</td><td class="">0.7506</td><td class="">0.6389</td><td class="">0.9356</td><td class="">0.7940</td></tr><tr><td><span class="dot" style="--model:#c98500;margin-right:9px"></span>Hybrid RRF</td><td class="best">0.8122</td><td class="best">0.7154</td><td class="best">0.9695</td><td class="best">0.8498</td></tr></tbody></table></div>
+  </div>
+</section>
+
+<section id="interface">
+  <span class="kicker">The interface</span>
+  <h2>A news desk, with the evaluation built in</h2>
+  <p class="sub">One-click example queries, a model selector and a desk filter; result cards with a score bar, highlighted
+  snippet, matched terms and the full story in place.</p>
+  <div class="grid2">
+    <figure><div class="frame"><img src="assets/ui_compare.webp" width="1600" height="1079" loading="lazy" alt="Compare models tab: the top five results of all four models side by side with agreement badges"></div>
+      <figcaption><b>Compare models</b> — the top five of every model side by side, with a badge for how many models agree.</figcaption></figure>
+    <figure><div class="frame"><img src="assets/ui_explorer.webp" width="1600" height="1044" loading="lazy" alt="Topic explorer: a test topic re-scored live with each result&#x27;s relevance grade"></div>
+      <figcaption><b>Topic explorer</b> — re-runs any of the 25 test topics live and grades every result against the judgments.</figcaption></figure>
+  </div>
+  <figure style="margin-top:18px"><div class="frame"><img src="assets/ui_benchmark.webp" width="1600" height="1290" loading="lazy" alt="Benchmark tab: headline metrics, interactive comparison and precision-recall charts"></div>
+    <figcaption><b>Benchmark</b> — headline metrics and interactive charts with tooltips and a precision–recall crosshair.</figcaption></figure>
+</section>
+
+<section id="how">
+  <span class="kicker">How it works</span>
+  <h2>From raw text to ranked results</h2>
+  <div class="frame" style="margin-top:18px"><img src="assets/pipeline.webp" width="1460" height="700" loading="lazy" alt="Architecture: preprocessing feeds an inverted index, TF-IDF vectors and passage embeddings; BM25 and the Sentence Transformer are fused with RRF"></div>
+  <div class="steps">
+    <div><b>Clean corpus.</b> The official release (2,225 articles) decoded as UTF-8, HTML entities resolved and
+    99 exact duplicates removed.</div>
+    <div><b>Index.</b> 20,485 terms and 315,438 postings, a sparse TF-IDF matrix, and
+    7,146 passage embeddings (160-word windows).</div>
+    <div><b>Rank.</b> TF-IDF, BM25 and the Sentence Transformer each return a ranking; RRF fuses BM25 with the Sentence
+    Transformer by rank position.</div>
+    <div><b>Evaluate.</b> P@10, Recall@100, MAP, graded nDCG@10, MRR, precision–recall curves, randomisation tests and
+    ablations of passage pooling, fusion components and k.</div>
+  </div>
+  <h2 style="margin-top:44px;font-size:1.6rem">A purpose-built test collection</h2>
+  <p class="sub">The corpus has no official queries. Topics were written TREC-style, pooled to depth 20 over five runs and judged
+  blind; a keyword sweep of the whole archive filled the gaps the pool missed.</p>
+  <div class="stats"><div class="stat"><div class="v">25</div><div class="l">test topics — 13 keyword, 12 paraphrased</div></div><div class="stat"><div class="v">957</div><div class="l">graded judgments (0 / 1 / 2)</div></div><div class="stat"><div class="v">347</div><div class="l">relevant articles, 246 highly</div></div><div class="stat"><div class="v">42</div><div class="l">found only by the keyword sweep</div></div><div class="stat"><div class="v">100%</div><div class="l">of every model&#x27;s top 10 judged</div></div></div>
+</section>
+
+<section id="documents" class="docs">
+  <span class="kicker">Documents</span>
+  <h2>Report and presentation</h2>
+  <div class="grid2">
+    <a class="card" href="BBC_News_Retrieval_Report.pdf" style="--model:var(--teal)"><div class="stripe"></div><h3>Project report</h3>
+      <p class="k">PDF · 31 pages</p><p>Dataset, methodology with equations, test collection, results, significance tests, ablations,
+      efficiency and limitations.</p></a>
+    <a class="card" href="BBC_News_Retrieval_Presentation.pdf" style="--model:var(--amber)"><div class="stripe"></div><h3>Presentation</h3>
+      <p class="k">PDF · 20 slides (also as <span>PPTX</span>)</p><p>The project in twenty slides, from the problem to the live benchmark,
+      with speaker notes in the PPTX.</p></a>
+  </div>
+</section>
+
+<section id="run">
+  <span class="kicker">Run it yourself</span>
+  <h2>Three commands</h2>
+  <p class="sub">The app downloads and verifies the official dataset on first start; the BBC article text is not stored in the repository.</p>
+<pre><span class="c"># clone and install</span>
+git clone https://github.com/akshatsharma-x/BBC-News-Retrieval.git && cd BBC-News-Retrieval
+python -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt
+<span class="c"># launch the search app (first start: ~1 minute)</span>
+streamlit run app.py</pre>
+</section>
+</main>
+<footer><div class="wrap">
+  <span>Data: BBC News dataset — D. Greene &amp; P. Cunningham, ICML 2006 · articles © BBC · encoder: sentence-transformers/all-MiniLM-L6-v2</span>
+  <span><a href="https://github.com/akshatsharma-x/BBC-News-Retrieval">Source on GitHub</a> · <a href="https://bbc-news-retrieval.streamlit.app">Live app</a></span>
+</div></footer>
+</body>
+</html>
