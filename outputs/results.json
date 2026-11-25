@@ -1,0 +1,2020 @@
+{
+ "corpus": {
+  "raw_articles": 2225,
+  "exact_duplicates_removed": 99,
+  "unique_articles": 2126,
+  "raw_per_category": {
+   "business": 510,
+   "entertainment": 386,
+   "politics": 417,
+   "sport": 511,
+   "tech": 401
+  },
+  "unique_per_category": {
+   "business": 503,
+   "entertainment": 369,
+   "politics": 403,
+   "sport": 504,
+   "tech": 347
+  },
+  "body_words_mean": 378.9,
+  "body_words_median": 325.0,
+  "body_words_min": 84,
+  "body_words_max": 4428,
+  "duplicate_titles_remaining": 60
+ },
+ "index_stats": {
+  "documents": 2126,
+  "vocabulary_terms": 20485,
+  "total_postings": 315438,
+  "total_tokens": 476136,
+  "avg_doc_length_tokens": 224.0,
+  "avg_postings_length": 15.4,
+  "max_postings_length": 1807,
+  "hapax_terms": 8633
+ },
+ "top_df_terms": [
+  [
+   "said",
+   1807
+  ],
+  [
+   "year",
+   1398
+  ],
+  [
+   "also",
+   1197
+  ],
+  [
+   "would",
+   1098
+  ],
+  [
+   "one",
+   1038
+  ],
+  [
+   "time",
+   937
+  ],
+  [
+   "new",
+   935
+  ],
+  [
+   "last",
+   892
+  ],
+  [
+   "could",
+   833
+  ],
+  [
+   "two",
+   832
+  ]
+ ],
+ "example_postings": {
+  "iPod": {
+   "stem": "ipod",
+   "df": 32,
+   "idf_bm25": 4.181,
+   "top_postings": [
+    [
+     "tec-260",
+     8
+    ],
+    [
+     "tec-040",
+     7
+    ],
+    [
+     "tec-110",
+     6
+    ],
+    [
+     "tec-127",
+     6
+    ],
+    [
+     "tec-148",
+     6
+    ]
+   ]
+  },
+  "Yukos": {
+   "stem": "yuko",
+   "df": 27,
+   "idf_bm25": 4.348,
+   "top_postings": [
+    [
+     "bus-314",
+     16
+    ],
+    [
+     "bus-083",
+     15
+    ],
+    [
+     "bus-358",
+     14
+    ],
+    [
+     "bus-164",
+     12
+    ],
+    [
+     "bus-332",
+     12
+    ]
+   ]
+  },
+  "Kenteris": {
+   "stem": "kenteri",
+   "df": 16,
+   "idf_bm25": 4.859,
+   "top_postings": [
+    [
+     "spo-047",
+     8
+    ],
+    [
+     "spo-082",
+     7
+    ],
+    [
+     "spo-017",
+     6
+    ],
+    [
+     "spo-051",
+     5
+    ],
+    [
+     "spo-081",
+     5
+    ]
+   ]
+  },
+  "election": {
+   "stem": "elect",
+   "df": 228,
+   "idf_bm25": 2.231,
+   "top_postings": [
+    [
+     "tec-001",
+     15
+    ],
+    [
+     "pol-207",
+     10
+    ],
+    [
+     "pol-293",
+     10
+    ],
+    [
+     "pol-111",
+     9
+    ],
+    [
+     "pol-250",
+     9
+    ]
+   ]
+  }
+ },
+ "tfidf_vocabulary": 20485,
+ "dense": {
+  "model": "sentence-transformers/all-MiniLM-L6-v2",
+  "device": "mps",
+  "passages": 7146,
+  "dim": 384,
+  "passages_per_doc": 3.36
+ },
+ "timings_seconds": {
+  "Preprocessing": 0.369,
+  "Inverted index": 0.135,
+  "TF-IDF document vectors": 0.073,
+  "BM25 length norms": 0.0,
+  "Passage embeddings": 13.29
+ },
+ "embeddings_from_cache": false,
+ "engine_build_seconds": 13.87,
+ "latency_ms_median": {
+  "TF-IDF": 0.524,
+  "BM25": 0.058,
+  "Sentence Transformer": 3.762,
+  "Hybrid RRF": 3.883,
+  "components": {
+   "Preprocess query": 0.009,
+   "TF-IDF": 0.515,
+   "BM25": 0.048,
+   "Sentence Transformer": 3.762,
+   "RRF fusion step": 0.063
+  }
+ },
+ "qrels": {
+  "queries": 25,
+  "judged_pairs": 957,
+  "relevant": 347,
+  "highly_relevant": 246,
+  "relevant_per_query_min": 3,
+  "relevant_per_query_max": 41,
+  "relevant_per_query_mean": 13.9,
+  "pool_depth": 20,
+  "pooled_pairs": 879,
+  "relevant_found_by_sweep": 42,
+  "relevant_per_query": {
+   "Q01": 23,
+   "Q02": 16,
+   "Q03": 10,
+   "Q04": 15,
+   "Q05": 8,
+   "Q06": 6,
+   "Q07": 19,
+   "Q08": 7,
+   "Q09": 9,
+   "Q10": 6,
+   "Q11": 5,
+   "Q12": 8,
+   "Q13": 9,
+   "Q14": 18,
+   "Q15": 12,
+   "Q16": 15,
+   "Q17": 22,
+   "Q18": 13,
+   "Q19": 3,
+   "Q20": 24,
+   "Q21": 12,
+   "Q22": 41,
+   "Q23": 14,
+   "Q24": 16,
+   "Q25": 16
+  }
+ },
+ "main": [
+  {
+   "system": "TF-IDF",
+   "P@10": 0.652,
+   "Recall@100": 0.9364,
+   "AP": 0.7051,
+   "nDCG@10": 0.72,
+   "Recall@10": 0.5901,
+   "RR": 0.8733,
+   "Judged@10": 1.0,
+   "Judged@20": 0.998
+  },
+  {
+   "system": "BM25",
+   "P@10": 0.656,
+   "Recall@100": 0.9431,
+   "AP": 0.7241,
+   "nDCG@10": 0.7396,
+   "Recall@10": 0.5945,
+   "RR": 0.92,
+   "Judged@10": 1.0,
+   "Judged@20": 0.998
+  },
+  {
+   "system": "Sentence Transformer",
+   "P@10": 0.748,
+   "Recall@100": 0.9763,
+   "AP": 0.8101,
+   "nDCG@10": 0.827,
+   "Recall@10": 0.6458,
+   "RR": 1.0,
+   "Judged@10": 1.0,
+   "Judged@20": 1.0
+  },
+  {
+   "system": "Hybrid RRF",
+   "P@10": 0.724,
+   "Recall@100": 0.9924,
+   "AP": 0.8108,
+   "nDCG@10": 0.8135,
+   "Recall@10": 0.6346,
+   "RR": 0.98,
+   "Judged@10": 1.0,
+   "Judged@20": 1.0
+  }
+ ],
+ "by_style": [
+  {
+   "style": "keyword",
+   "system": "TF-IDF",
+   "AP": 0.7686,
+   "nDCG@10": 0.7836
+  },
+  {
+   "style": "keyword",
+   "system": "BM25",
+   "AP": 0.7788,
+   "nDCG@10": 0.7983
+  },
+  {
+   "style": "keyword",
+   "system": "Sentence Transformer",
+   "AP": 0.7735,
+   "nDCG@10": 0.8156
+  },
+  {
+   "style": "keyword",
+   "system": "Hybrid RRF",
+   "AP": 0.806,
+   "nDCG@10": 0.8317
+  },
+  {
+   "style": "natural",
+   "system": "TF-IDF",
+   "AP": 0.6364,
+   "nDCG@10": 0.651
+  },
+  {
+   "style": "natural",
+   "system": "BM25",
+   "AP": 0.6648,
+   "nDCG@10": 0.6761
+  },
+  {
+   "style": "natural",
+   "system": "Sentence Transformer",
+   "AP": 0.8497,
+   "nDCG@10": 0.8394
+  },
+  {
+   "style": "natural",
+   "system": "Hybrid RRF",
+   "AP": 0.8161,
+   "nDCG@10": 0.7939
+  }
+ ],
+ "by_category": [
+  {
+   "category": "business",
+   "system": "TF-IDF",
+   "AP": 0.8092,
+   "nDCG@10": 0.841
+  },
+  {
+   "category": "business",
+   "system": "BM25",
+   "AP": 0.7998,
+   "nDCG@10": 0.8174
+  },
+  {
+   "category": "business",
+   "system": "Sentence Transformer",
+   "AP": 0.9653,
+   "nDCG@10": 0.9713
+  },
+  {
+   "category": "business",
+   "system": "Hybrid RRF",
+   "AP": 0.9201,
+   "nDCG@10": 0.9523
+  },
+  {
+   "category": "entertainment",
+   "system": "TF-IDF",
+   "AP": 0.5988,
+   "nDCG@10": 0.5773
+  },
+  {
+   "category": "entertainment",
+   "system": "BM25",
+   "AP": 0.648,
+   "nDCG@10": 0.7027
+  },
+  {
+   "category": "entertainment",
+   "system": "Sentence Transformer",
+   "AP": 0.6522,
+   "nDCG@10": 0.736
+  },
+  {
+   "category": "entertainment",
+   "system": "Hybrid RRF",
+   "AP": 0.6967,
+   "nDCG@10": 0.7692
+  },
+  {
+   "category": "politics",
+   "system": "TF-IDF",
+   "AP": 0.8121,
+   "nDCG@10": 0.7638
+  },
+  {
+   "category": "politics",
+   "system": "BM25",
+   "AP": 0.819,
+   "nDCG@10": 0.8005
+  },
+  {
+   "category": "politics",
+   "system": "Sentence Transformer",
+   "AP": 0.8625,
+   "nDCG@10": 0.8362
+  },
+  {
+   "category": "politics",
+   "system": "Hybrid RRF",
+   "AP": 0.8802,
+   "nDCG@10": 0.8223
+  },
+  {
+   "category": "sport",
+   "system": "TF-IDF",
+   "AP": 0.6661,
+   "nDCG@10": 0.7066
+  },
+  {
+   "category": "sport",
+   "system": "BM25",
+   "AP": 0.6658,
+   "nDCG@10": 0.6601
+  },
+  {
+   "category": "sport",
+   "system": "Sentence Transformer",
+   "AP": 0.695,
+   "nDCG@10": 0.7396
+  },
+  {
+   "category": "sport",
+   "system": "Hybrid RRF",
+   "AP": 0.7098,
+   "nDCG@10": 0.6815
+  },
+  {
+   "category": "tech",
+   "system": "TF-IDF",
+   "AP": 0.6393,
+   "nDCG@10": 0.7112
+  },
+  {
+   "category": "tech",
+   "system": "BM25",
+   "AP": 0.688,
+   "nDCG@10": 0.7175
+  },
+  {
+   "category": "tech",
+   "system": "Sentence Transformer",
+   "AP": 0.8753,
+   "nDCG@10": 0.8521
+  },
+  {
+   "category": "tech",
+   "system": "Hybrid RRF",
+   "AP": 0.8474,
+   "nDCG@10": 0.8423
+  }
+ ],
+ "significance": [
+  {
+   "metric": "AP",
+   "comparison": "Hybrid RRF vs TF-IDF",
+   "mean_diff": 0.1057,
+   "wins": 19,
+   "ties": 2,
+   "losses": 4,
+   "p_value": 0.0002
+  },
+  {
+   "metric": "AP",
+   "comparison": "Hybrid RRF vs BM25",
+   "mean_diff": 0.0867,
+   "wins": 16,
+   "ties": 2,
+   "losses": 7,
+   "p_value": 0.0013
+  },
+  {
+   "metric": "AP",
+   "comparison": "Hybrid RRF vs Sentence Transformer",
+   "mean_diff": 0.0007,
+   "wins": 11,
+   "ties": 3,
+   "losses": 11,
+   "p_value": 0.9694
+  },
+  {
+   "metric": "AP",
+   "comparison": "Sentence Transformer vs BM25",
+   "mean_diff": 0.086,
+   "wins": 15,
+   "ties": 1,
+   "losses": 9,
+   "p_value": 0.057
+  },
+  {
+   "metric": "nDCG@10",
+   "comparison": "Hybrid RRF vs TF-IDF",
+   "mean_diff": 0.0936,
+   "wins": 17,
+   "ties": 2,
+   "losses": 6,
+   "p_value": 0.0027
+  },
+  {
+   "metric": "nDCG@10",
+   "comparison": "Hybrid RRF vs BM25",
+   "mean_diff": 0.0739,
+   "wins": 16,
+   "ties": 2,
+   "losses": 7,
+   "p_value": 0.0015
+  },
+  {
+   "metric": "nDCG@10",
+   "comparison": "Hybrid RRF vs Sentence Transformer",
+   "mean_diff": -0.0135,
+   "wins": 10,
+   "ties": 3,
+   "losses": 12,
+   "p_value": 0.4058
+  },
+  {
+   "metric": "nDCG@10",
+   "comparison": "Sentence Transformer vs BM25",
+   "mean_diff": 0.0874,
+   "wins": 17,
+   "ties": 1,
+   "losses": 7,
+   "p_value": 0.0119
+  },
+  {
+   "metric": "P@10",
+   "comparison": "Hybrid RRF vs TF-IDF",
+   "mean_diff": 0.072,
+   "wins": 10,
+   "ties": 12,
+   "losses": 3,
+   "p_value": 0.0243
+  },
+  {
+   "metric": "P@10",
+   "comparison": "Hybrid RRF vs BM25",
+   "mean_diff": 0.068,
+   "wins": 12,
+   "ties": 10,
+   "losses": 3,
+   "p_value": 0.0388
+  },
+  {
+   "metric": "P@10",
+   "comparison": "Hybrid RRF vs Sentence Transformer",
+   "mean_diff": -0.024,
+   "wins": 4,
+   "ties": 15,
+   "losses": 6,
+   "p_value": 0.3781
+  },
+  {
+   "metric": "P@10",
+   "comparison": "Sentence Transformer vs BM25",
+   "mean_diff": 0.092,
+   "wins": 13,
+   "ties": 7,
+   "losses": 5,
+   "p_value": 0.057
+  }
+ ],
+ "ablation_components": [
+  {
+   "system": "Sentence Transformer",
+   "P@10": 0.748,
+   "Recall@100": 0.9763,
+   "AP": 0.8101,
+   "nDCG@10": 0.827
+  },
+  {
+   "system": "ST FirstP (opening passage only)",
+   "P@10": 0.74,
+   "Recall@100": 0.9648,
+   "AP": 0.787,
+   "nDCG@10": 0.8207
+  },
+  {
+   "system": "Hybrid RRF",
+   "P@10": 0.724,
+   "Recall@100": 0.9924,
+   "AP": 0.8108,
+   "nDCG@10": 0.8135
+  },
+  {
+   "system": "RRF BM25 + ST FirstP",
+   "P@10": 0.736,
+   "Recall@100": 0.9887,
+   "AP": 0.8183,
+   "nDCG@10": 0.8276
+  },
+  {
+   "system": "RRF TF-IDF + ST",
+   "P@10": 0.72,
+   "Recall@100": 0.994,
+   "AP": 0.805,
+   "nDCG@10": 0.8174
+  },
+  {
+   "system": "RRF TF-IDF + BM25 (lexical only)",
+   "P@10": 0.656,
+   "Recall@100": 0.9431,
+   "AP": 0.7244,
+   "nDCG@10": 0.7335
+  },
+  {
+   "system": "RRF TF-IDF + BM25 + ST",
+   "P@10": 0.712,
+   "Recall@100": 0.9846,
+   "AP": 0.7878,
+   "nDCG@10": 0.8098
+  }
+ ],
+ "ablation_rrf_k": [
+  {
+   "rrf_k": 1,
+   "P@10": 0.732,
+   "Recall@100": 0.994,
+   "AP": 0.8132,
+   "nDCG@10": 0.8103
+  },
+  {
+   "rrf_k": 5,
+   "P@10": 0.728,
+   "Recall@100": 0.994,
+   "AP": 0.8143,
+   "nDCG@10": 0.8139
+  },
+  {
+   "rrf_k": 10,
+   "P@10": 0.724,
+   "Recall@100": 0.994,
+   "AP": 0.8148,
+   "nDCG@10": 0.8135
+  },
+  {
+   "rrf_k": 20,
+   "P@10": 0.724,
+   "Recall@100": 0.994,
+   "AP": 0.8166,
+   "nDCG@10": 0.8158
+  },
+  {
+   "rrf_k": 40,
+   "P@10": 0.728,
+   "Recall@100": 0.9924,
+   "AP": 0.8124,
+   "nDCG@10": 0.819
+  },
+  {
+   "rrf_k": 60,
+   "P@10": 0.724,
+   "Recall@100": 0.9924,
+   "AP": 0.8108,
+   "nDCG@10": 0.8135
+  },
+  {
+   "rrf_k": 100,
+   "P@10": 0.732,
+   "Recall@100": 0.9921,
+   "AP": 0.8091,
+   "nDCG@10": 0.8166
+  },
+  {
+   "rrf_k": 200,
+   "P@10": 0.732,
+   "Recall@100": 0.9826,
+   "AP": 0.806,
+   "nDCG@10": 0.8167
+  },
+  {
+   "rrf_k": 500,
+   "P@10": 0.732,
+   "Recall@100": 0.9757,
+   "AP": 0.8038,
+   "nDCG@10": 0.8167
+  }
+ ],
+ "known_item": {
+  "queries": 2066,
+  "excluded_duplicate_titles": 60,
+  "build_seconds": 10.5,
+  "table": [
+   {
+    "system": "TF-IDF",
+    "MRR": 0.753,
+    "Success@1": 0.6447,
+    "Recall@10": 0.9361,
+    "Recall@100": 0.9932,
+    "nDCG@10": 0.7956
+   },
+   {
+    "system": "BM25",
+    "MRR": 0.7913,
+    "Success@1": 0.6951,
+    "Recall@10": 0.9506,
+    "Recall@100": 0.9932,
+    "nDCG@10": 0.8286
+   },
+   {
+    "system": "Sentence Transformer",
+    "MRR": 0.7506,
+    "Success@1": 0.6389,
+    "Recall@10": 0.9356,
+    "Recall@100": 0.9913,
+    "nDCG@10": 0.794
+   },
+   {
+    "system": "Hybrid RRF",
+    "MRR": 0.8122,
+    "Success@1": 0.7154,
+    "Recall@10": 0.9695,
+    "Recall@100": 0.9976,
+    "nDCG@10": 0.8498
+   }
+  ],
+  "p_values_mrr": {
+   "Hybrid RRF vs TF-IDF": 0.0002,
+   "Hybrid RRF vs BM25": 0.0002,
+   "Hybrid RRF vs Sentence Transformer": 0.0002
+  }
+ },
+ "case_studies": {
+  "Q07": {
+   "query": "films that took the most money at cinemas",
+   "style": "natural",
+   "runs": {
+    "TF-IDF": [
+     {
+      "doc_id": "tec-013",
+      "title": "UK pioneers digital film network",
+      "grade": 0
+     },
+     {
+      "doc_id": "ent-046",
+      "title": "Howl helps boost Japan's cinemas",
+      "grade": 2
+     },
+     {
+      "doc_id": "ent-348",
+      "title": "Berlin celebrates European cinema",
+      "grade": 0
+     },
+     {
+      "doc_id": "ent-058",
+      "title": "Berlin hails European cinema",
+      "grade": 0
+     },
+     {
+      "doc_id": "ent-329",
+      "title": "Van Gogh festival film withdrawn",
+      "grade": 0
+     }
+    ],
+    "BM25": [
+     {
+      "doc_id": "ent-046",
+      "title": "Howl helps boost Japan's cinemas",
+      "grade": 2
+     },
+     {
+      "doc_id": "ent-384",
+      "title": "Robots march to US cinema summit",
+      "grade": 2
+     },
+     {
+      "doc_id": "ent-336",
+      "title": "Films on war triumph at Sundance",
+      "grade": 0
+     },
+     {
+      "doc_id": "tec-013",
+      "title": "UK pioneers digital film network",
+      "grade": 0
+     },
+     {
+      "doc_id": "ent-076",
+      "title": "Fockers fuel festive film chart",
+      "grade": 2
+     }
+    ],
+    "Sentence Transformer": [
+     {
+      "doc_id": "ent-363",
+      "title": "Oscar nominees lack pulling power",
+      "grade": 1
+     },
+     {
+      "doc_id": "ent-066",
+      "title": "US box office set for record high",
+      "grade": 2
+     },
+     {
+      "doc_id": "ent-046",
+      "title": "Howl helps boost Japan's cinemas",
+      "grade": 2
+     },
+     {
+      "doc_id": "ent-359",
+      "title": "Shark Tale DVD is US best-seller",
+      "grade": 0
+     },
+     {
+      "doc_id": "ent-380",
+      "title": "Boogeyman takes box office lead",
+      "grade": 2
+     }
+    ],
+    "Hybrid RRF": [
+     {
+      "doc_id": "ent-046",
+      "title": "Howl helps boost Japan's cinemas",
+      "grade": 2
+     },
+     {
+      "doc_id": "ent-384",
+      "title": "Robots march to US cinema summit",
+      "grade": 2
+     },
+     {
+      "doc_id": "ent-076",
+      "title": "Fockers fuel festive film chart",
+      "grade": 2
+     },
+     {
+      "doc_id": "ent-363",
+      "title": "Oscar nominees lack pulling power",
+      "grade": 1
+     },
+     {
+      "doc_id": "ent-066",
+      "title": "US box office set for record high",
+      "grade": 2
+     }
+    ]
+   }
+  },
+  "Q13": {
+   "query": "Kilroy-Silk UKIP Veritas",
+   "style": "keyword",
+   "runs": {
+    "TF-IDF": [
+     {
+      "doc_id": "pol-333",
+      "title": "Kilroy names election seat target",
+      "grade": 1
+     },
+     {
+      "doc_id": "pol-288",
+      "title": "New UKIP defection to 'Veritas'",
+      "grade": 2
+     },
+     {
+      "doc_id": "pol-281",
+      "title": "Kilroy-Silk quits 'shameful' UKIP",
+      "grade": 2
+     },
+     {
+      "doc_id": "pol-325",
+      "title": "UKIP could sue Veritas defectors",
+      "grade": 2
+     },
+     {
+      "doc_id": "pol-111",
+      "title": "Kilroy launches 'Veritas' party",
+      "grade": 2
+     }
+    ],
+    "BM25": [
+     {
+      "doc_id": "pol-333",
+      "title": "Kilroy names election seat target",
+      "grade": 1
+     },
+     {
+      "doc_id": "pol-111",
+      "title": "Kilroy launches 'Veritas' party",
+      "grade": 2
+     },
+     {
+      "doc_id": "pol-293",
+      "title": "Kilroy launches 'Veritas' party",
+      "grade": 2
+     },
+     {
+      "doc_id": "pol-288",
+      "title": "New UKIP defection to 'Veritas'",
+      "grade": 2
+     },
+     {
+      "doc_id": "pol-281",
+      "title": "Kilroy-Silk quits 'shameful' UKIP",
+      "grade": 2
+     }
+    ],
+    "Sentence Transformer": [
+     {
+      "doc_id": "pol-333",
+      "title": "Kilroy names election seat target",
+      "grade": 1
+     },
+     {
+      "doc_id": "pol-111",
+      "title": "Kilroy launches 'Veritas' party",
+      "grade": 2
+     },
+     {
+      "doc_id": "pol-293",
+      "title": "Kilroy launches 'Veritas' party",
+      "grade": 2
+     },
+     {
+      "doc_id": "pol-281",
+      "title": "Kilroy-Silk quits 'shameful' UKIP",
+      "grade": 2
+     },
+     {
+      "doc_id": "pol-288",
+      "title": "New UKIP defection to 'Veritas'",
+      "grade": 2
+     }
+    ],
+    "Hybrid RRF": [
+     {
+      "doc_id": "pol-333",
+      "title": "Kilroy names election seat target",
+      "grade": 1
+     },
+     {
+      "doc_id": "pol-111",
+      "title": "Kilroy launches 'Veritas' party",
+      "grade": 2
+     },
+     {
+      "doc_id": "pol-293",
+      "title": "Kilroy launches 'Veritas' party",
+      "grade": 2
+     },
+     {
+      "doc_id": "pol-281",
+      "title": "Kilroy-Silk quits 'shameful' UKIP",
+      "grade": 2
+     },
+     {
+      "doc_id": "pol-288",
+      "title": "New UKIP defection to 'Veritas'",
+      "grade": 2
+     }
+    ]
+   }
+  },
+  "Q25": {
+   "query": "fraudsters tricking people into revealing bank details online",
+   "style": "natural",
+   "runs": {
+    "TF-IDF": [
+     {
+      "doc_id": "bus-236",
+      "title": "Card fraudsters 'targeting web'",
+      "grade": 1
+     },
+     {
+      "doc_id": "tec-164",
+      "title": "Who do you think you are?",
+      "grade": 1
+     },
+     {
+      "doc_id": "bus-473",
+      "title": "Two Nigerian banks set to merge",
+      "grade": 0
+     },
+     {
+      "doc_id": "bus-185",
+      "title": "US bank 'loses' customer details",
+      "grade": 0
+     },
+     {
+      "doc_id": "tec-217",
+      "title": "Cyber criminals step up the pace",
+      "grade": 2
+     }
+    ],
+    "BM25": [
+     {
+      "doc_id": "tec-164",
+      "title": "Who do you think you are?",
+      "grade": 1
+     },
+     {
+      "doc_id": "bus-236",
+      "title": "Card fraudsters 'targeting web'",
+      "grade": 1
+     },
+     {
+      "doc_id": "tec-217",
+      "title": "Cyber criminals step up the pace",
+      "grade": 2
+     },
+     {
+      "doc_id": "tec-031",
+      "title": "Solutions to net security fears",
+      "grade": 2
+     },
+     {
+      "doc_id": "bus-185",
+      "title": "US bank 'loses' customer details",
+      "grade": 0
+     }
+    ],
+    "Sentence Transformer": [
+     {
+      "doc_id": "tec-164",
+      "title": "Who do you think you are?",
+      "grade": 1
+     },
+     {
+      "doc_id": "tec-031",
+      "title": "Solutions to net security fears",
+      "grade": 2
+     },
+     {
+      "doc_id": "tec-120",
+      "title": "Dozens held over ID fraud site",
+      "grade": 2
+     },
+     {
+      "doc_id": "tec-281",
+      "title": "Cyber crime booms in 2004",
+      "grade": 1
+     },
+     {
+      "doc_id": "bus-079",
+      "title": "ID theft surge hits US consumers",
+      "grade": 1
+     }
+    ],
+    "Hybrid RRF": [
+     {
+      "doc_id": "tec-164",
+      "title": "Who do you think you are?",
+      "grade": 1
+     },
+     {
+      "doc_id": "tec-031",
+      "title": "Solutions to net security fears",
+      "grade": 2
+     },
+     {
+      "doc_id": "bus-236",
+      "title": "Card fraudsters 'targeting web'",
+      "grade": 1
+     },
+     {
+      "doc_id": "tec-217",
+      "title": "Cyber criminals step up the pace",
+      "grade": 2
+     },
+     {
+      "doc_id": "tec-281",
+      "title": "Cyber crime booms in 2004",
+      "grade": 1
+     }
+    ]
+   }
+  }
+ },
+ "preprocessing_example": {
+  "original": "Apple iPod family expands market. Apple has expanded its iPod family with the release of its next generation of the digital music players.\nIts latest challenges to the growing digital music gadget market include an iPod mini model which can hold 6GB compared to a previous 4GB.",
+  "cleaned": "apple ipod family expands market apple has expanded its ipod family with the release of its next generation of the digital music players its latest challenges to the growing digital music gadget market include an ipod mini model which can hold 6gb compared to a previous 4gb",
+  "tokens": [
+   "apple",
+   "ipod",
+   "family",
+   "expands",
+   "market",
+   "apple",
+   "has",
+   "expanded",
+   "its",
+   "ipod",
+   "family",
+   "with",
+   "the",
+   "release",
+   "of",
+   "its",
+   "next",
+   "generation",
+   "of",
+   "the",
+   "digital",
+   "music",
+   "players",
+   "its",
+   "latest",
+   "challenges",
+   "to",
+   "the",
+   "growing",
+   "digital",
+   "music",
+   "gadget",
+   "market",
+   "include",
+   "an",
+   "ipod",
+   "mini",
+   "model",
+   "which",
+   "can",
+   "hold",
+   "6gb",
+   "compared",
+   "to",
+   "a",
+   "previous",
+   "4gb"
+  ],
+  "without_stopwords": [
+   "apple",
+   "ipod",
+   "family",
+   "expands",
+   "market",
+   "apple",
+   "expanded",
+   "ipod",
+   "family",
+   "release",
+   "next",
+   "generation",
+   "digital",
+   "music",
+   "players",
+   "latest",
+   "challenges",
+   "growing",
+   "digital",
+   "music",
+   "gadget",
+   "market",
+   "include",
+   "ipod",
+   "mini",
+   "model",
+   "hold",
+   "6gb",
+   "compared",
+   "previous",
+   "4gb"
+  ],
+  "stemmed": [
+   "appl",
+   "ipod",
+   "famili",
+   "expand",
+   "market",
+   "appl",
+   "expand",
+   "ipod",
+   "famili",
+   "releas",
+   "next",
+   "gener",
+   "digit",
+   "music",
+   "player",
+   "latest",
+   "challeng",
+   "grow",
+   "digit",
+   "music",
+   "gadget",
+   "market",
+   "includ",
+   "ipod",
+   "mini",
+   "model",
+   "hold",
+   "6gb",
+   "compar",
+   "previou",
+   "4gb"
+  ]
+ },
+ "per_query_main": [
+  {
+   "qid": "Q01",
+   "system": "TF-IDF",
+   "P@10": 1.0,
+   "Recall@100": 1.0,
+   "AP": 0.9963,
+   "nDCG@10": 0.9477
+  },
+  {
+   "qid": "Q01",
+   "system": "BM25",
+   "P@10": 1.0,
+   "Recall@100": 1.0,
+   "AP": 0.9963,
+   "nDCG@10": 0.9014
+  },
+  {
+   "qid": "Q01",
+   "system": "Sentence Transformer",
+   "P@10": 1.0,
+   "Recall@100": 1.0,
+   "AP": 0.9982,
+   "nDCG@10": 1.0
+  },
+  {
+   "qid": "Q01",
+   "system": "Hybrid RRF",
+   "P@10": 1.0,
+   "Recall@100": 1.0,
+   "AP": 1.0,
+   "nDCG@10": 1.0
+  },
+  {
+   "qid": "Q02",
+   "system": "TF-IDF",
+   "P@10": 0.6,
+   "Recall@100": 0.875,
+   "AP": 0.3977,
+   "nDCG@10": 0.5745
+  },
+  {
+   "qid": "Q02",
+   "system": "BM25",
+   "P@10": 0.4,
+   "Recall@100": 0.875,
+   "AP": 0.2954,
+   "nDCG@10": 0.3984
+  },
+  {
+   "qid": "Q02",
+   "system": "Sentence Transformer",
+   "P@10": 1.0,
+   "Recall@100": 1.0,
+   "AP": 0.8827,
+   "nDCG@10": 0.9006
+  },
+  {
+   "qid": "Q02",
+   "system": "Hybrid RRF",
+   "P@10": 0.7,
+   "Recall@100": 1.0,
+   "AP": 0.7092,
+   "nDCG@10": 0.7653
+  },
+  {
+   "qid": "Q03",
+   "system": "TF-IDF",
+   "P@10": 1.0,
+   "Recall@100": 1.0,
+   "AP": 1.0,
+   "nDCG@10": 1.0
+  },
+  {
+   "qid": "Q03",
+   "system": "BM25",
+   "P@10": 1.0,
+   "Recall@100": 1.0,
+   "AP": 1.0,
+   "nDCG@10": 1.0
+  },
+  {
+   "qid": "Q03",
+   "system": "Sentence Transformer",
+   "P@10": 1.0,
+   "Recall@100": 1.0,
+   "AP": 1.0,
+   "nDCG@10": 1.0
+  },
+  {
+   "qid": "Q03",
+   "system": "Hybrid RRF",
+   "P@10": 1.0,
+   "Recall@100": 1.0,
+   "AP": 1.0,
+   "nDCG@10": 1.0
+  },
+  {
+   "qid": "Q04",
+   "system": "TF-IDF",
+   "P@10": 0.7,
+   "Recall@100": 0.9333,
+   "AP": 0.6863,
+   "nDCG@10": 0.7624
+  },
+  {
+   "qid": "Q04",
+   "system": "BM25",
+   "P@10": 0.8,
+   "Recall@100": 0.9333,
+   "AP": 0.7411,
+   "nDCG@10": 0.8669
+  },
+  {
+   "qid": "Q04",
+   "system": "Sentence Transformer",
+   "P@10": 1.0,
+   "Recall@100": 1.0,
+   "AP": 0.9455,
+   "nDCG@10": 0.9558
+  },
+  {
+   "qid": "Q04",
+   "system": "Hybrid RRF",
+   "P@10": 1.0,
+   "Recall@100": 1.0,
+   "AP": 0.905,
+   "nDCG@10": 1.0
+  },
+  {
+   "qid": "Q05",
+   "system": "TF-IDF",
+   "P@10": 0.7,
+   "Recall@100": 1.0,
+   "AP": 0.9659,
+   "nDCG@10": 0.9202
+  },
+  {
+   "qid": "Q05",
+   "system": "BM25",
+   "P@10": 0.7,
+   "Recall@100": 1.0,
+   "AP": 0.9659,
+   "nDCG@10": 0.9202
+  },
+  {
+   "qid": "Q05",
+   "system": "Sentence Transformer",
+   "P@10": 0.8,
+   "Recall@100": 1.0,
+   "AP": 1.0,
+   "nDCG@10": 1.0
+  },
+  {
+   "qid": "Q05",
+   "system": "Hybrid RRF",
+   "P@10": 0.8,
+   "Recall@100": 1.0,
+   "AP": 0.9861,
+   "nDCG@10": 0.9963
+  },
+  {
+   "qid": "Q06",
+   "system": "TF-IDF",
+   "P@10": 0.6,
+   "Recall@100": 1.0,
+   "AP": 0.6251,
+   "nDCG@10": 0.8244
+  },
+  {
+   "qid": "Q06",
+   "system": "BM25",
+   "P@10": 0.6,
+   "Recall@100": 1.0,
+   "AP": 0.8302,
+   "nDCG@10": 0.951
+  },
+  {
+   "qid": "Q06",
+   "system": "Sentence Transformer",
+   "P@10": 0.4,
+   "Recall@100": 1.0,
+   "AP": 0.6656,
+   "nDCG@10": 0.7976
+  },
+  {
+   "qid": "Q06",
+   "system": "Hybrid RRF",
+   "P@10": 0.5,
+   "Recall@100": 1.0,
+   "AP": 0.8125,
+   "nDCG@10": 0.938
+  },
+  {
+   "qid": "Q07",
+   "system": "TF-IDF",
+   "P@10": 0.2,
+   "Recall@100": 0.8947,
+   "AP": 0.2423,
+   "nDCG@10": 0.2173
+  },
+  {
+   "qid": "Q07",
+   "system": "BM25",
+   "P@10": 0.3,
+   "Recall@100": 0.8947,
+   "AP": 0.3566,
+   "nDCG@10": 0.4441
+  },
+  {
+   "qid": "Q07",
+   "system": "Sentence Transformer",
+   "P@10": 0.8,
+   "Recall@100": 0.8947,
+   "AP": 0.6693,
+   "nDCG@10": 0.6851
+  },
+  {
+   "qid": "Q07",
+   "system": "Hybrid RRF",
+   "P@10": 0.6,
+   "Recall@100": 1.0,
+   "AP": 0.5834,
+   "nDCG@10": 0.6641
+  },
+  {
+   "qid": "Q08",
+   "system": "TF-IDF",
+   "P@10": 0.7,
+   "Recall@100": 1.0,
+   "AP": 0.9087,
+   "nDCG@10": 0.8412
+  },
+  {
+   "qid": "Q08",
+   "system": "BM25",
+   "P@10": 0.6,
+   "Recall@100": 1.0,
+   "AP": 0.8235,
+   "nDCG@10": 0.8666
+  },
+  {
+   "qid": "Q08",
+   "system": "Sentence Transformer",
+   "P@10": 0.7,
+   "Recall@100": 1.0,
+   "AP": 0.8401,
+   "nDCG@10": 0.9553
+  },
+  {
+   "qid": "Q08",
+   "system": "Hybrid RRF",
+   "P@10": 0.7,
+   "Recall@100": 1.0,
+   "AP": 0.8333,
+   "nDCG@10": 0.9411
+  },
+  {
+   "qid": "Q09",
+   "system": "TF-IDF",
+   "P@10": 0.3,
+   "Recall@100": 1.0,
+   "AP": 0.3569,
+   "nDCG@10": 0.3412
+  },
+  {
+   "qid": "Q09",
+   "system": "BM25",
+   "P@10": 0.5,
+   "Recall@100": 1.0,
+   "AP": 0.4275,
+   "nDCG@10": 0.5838
+  },
+  {
+   "qid": "Q09",
+   "system": "Sentence Transformer",
+   "P@10": 0.2,
+   "Recall@100": 0.5556,
+   "AP": 0.1902,
+   "nDCG@10": 0.4339
+  },
+  {
+   "qid": "Q09",
+   "system": "Hybrid RRF",
+   "P@10": 0.2,
+   "Recall@100": 1.0,
+   "AP": 0.3379,
+   "nDCG@10": 0.5217
+  },
+  {
+   "qid": "Q10",
+   "system": "TF-IDF",
+   "P@10": 0.5,
+   "Recall@100": 1.0,
+   "AP": 0.8611,
+   "nDCG@10": 0.6625
+  },
+  {
+   "qid": "Q10",
+   "system": "BM25",
+   "P@10": 0.5,
+   "Recall@100": 1.0,
+   "AP": 0.8021,
+   "nDCG@10": 0.6682
+  },
+  {
+   "qid": "Q10",
+   "system": "Sentence Transformer",
+   "P@10": 0.5,
+   "Recall@100": 1.0,
+   "AP": 0.8958,
+   "nDCG@10": 0.808
+  },
+  {
+   "qid": "Q10",
+   "system": "Hybrid RRF",
+   "P@10": 0.5,
+   "Recall@100": 1.0,
+   "AP": 0.9167,
+   "nDCG@10": 0.7812
+  },
+  {
+   "qid": "Q11",
+   "system": "TF-IDF",
+   "P@10": 0.4,
+   "Recall@100": 1.0,
+   "AP": 0.7442,
+   "nDCG@10": 0.8052
+  },
+  {
+   "qid": "Q11",
+   "system": "BM25",
+   "P@10": 0.4,
+   "Recall@100": 1.0,
+   "AP": 0.5741,
+   "nDCG@10": 0.7178
+  },
+  {
+   "qid": "Q11",
+   "system": "Sentence Transformer",
+   "P@10": 0.5,
+   "Recall@100": 1.0,
+   "AP": 0.9667,
+   "nDCG@10": 0.9896
+  },
+  {
+   "qid": "Q11",
+   "system": "Hybrid RRF",
+   "P@10": 0.4,
+   "Recall@100": 1.0,
+   "AP": 0.8509,
+   "nDCG@10": 0.8539
+  },
+  {
+   "qid": "Q12",
+   "system": "TF-IDF",
+   "P@10": 0.6,
+   "Recall@100": 1.0,
+   "AP": 0.8816,
+   "nDCG@10": 0.8256
+  },
+  {
+   "qid": "Q12",
+   "system": "BM25",
+   "P@10": 0.7,
+   "Recall@100": 1.0,
+   "AP": 0.9276,
+   "nDCG@10": 0.9202
+  },
+  {
+   "qid": "Q12",
+   "system": "Sentence Transformer",
+   "P@10": 0.8,
+   "Recall@100": 1.0,
+   "AP": 0.9861,
+   "nDCG@10": 0.9963
+  },
+  {
+   "qid": "Q12",
+   "system": "Hybrid RRF",
+   "P@10": 0.8,
+   "Recall@100": 1.0,
+   "AP": 0.9861,
+   "nDCG@10": 0.9963
+  },
+  {
+   "qid": "Q13",
+   "system": "TF-IDF",
+   "P@10": 0.9,
+   "Recall@100": 1.0,
+   "AP": 0.9627,
+   "nDCG@10": 0.8608
+  },
+  {
+   "qid": "Q13",
+   "system": "BM25",
+   "P@10": 0.9,
+   "Recall@100": 1.0,
+   "AP": 0.9627,
+   "nDCG@10": 0.8688
+  },
+  {
+   "qid": "Q13",
+   "system": "Sentence Transformer",
+   "P@10": 0.9,
+   "Recall@100": 1.0,
+   "AP": 0.9468,
+   "nDCG@10": 0.8533
+  },
+  {
+   "qid": "Q13",
+   "system": "Hybrid RRF",
+   "P@10": 0.9,
+   "Recall@100": 1.0,
+   "AP": 0.9468,
+   "nDCG@10": 0.8585
+  },
+  {
+   "qid": "Q14",
+   "system": "TF-IDF",
+   "P@10": 1.0,
+   "Recall@100": 1.0,
+   "AP": 0.9447,
+   "nDCG@10": 0.865
+  },
+  {
+   "qid": "Q14",
+   "system": "BM25",
+   "P@10": 1.0,
+   "Recall@100": 1.0,
+   "AP": 0.9621,
+   "nDCG@10": 0.8777
+  },
+  {
+   "qid": "Q14",
+   "system": "Sentence Transformer",
+   "P@10": 0.9,
+   "Recall@100": 1.0,
+   "AP": 0.8356,
+   "nDCG@10": 0.7286
+  },
+  {
+   "qid": "Q14",
+   "system": "Hybrid RRF",
+   "P@10": 1.0,
+   "Recall@100": 1.0,
+   "AP": 0.952,
+   "nDCG@10": 0.7667
+  },
+  {
+   "qid": "Q15",
+   "system": "TF-IDF",
+   "P@10": 0.5,
+   "Recall@100": 1.0,
+   "AP": 0.5274,
+   "nDCG@10": 0.4624
+  },
+  {
+   "qid": "Q15",
+   "system": "BM25",
+   "P@10": 0.5,
+   "Recall@100": 1.0,
+   "AP": 0.6683,
+   "nDCG@10": 0.618
+  },
+  {
+   "qid": "Q15",
+   "system": "Sentence Transformer",
+   "P@10": 0.6,
+   "Recall@100": 1.0,
+   "AP": 0.5774,
+   "nDCG@10": 0.613
+  },
+  {
+   "qid": "Q15",
+   "system": "Hybrid RRF",
+   "P@10": 0.6,
+   "Recall@100": 1.0,
+   "AP": 0.6652,
+   "nDCG@10": 0.6362
+  },
+  {
+   "qid": "Q16",
+   "system": "TF-IDF",
+   "P@10": 1.0,
+   "Recall@100": 1.0,
+   "AP": 0.9674,
+   "nDCG@10": 1.0
+  },
+  {
+   "qid": "Q16",
+   "system": "BM25",
+   "P@10": 1.0,
+   "Recall@100": 1.0,
+   "AP": 0.9666,
+   "nDCG@10": 1.0
+  },
+  {
+   "qid": "Q16",
+   "system": "Sentence Transformer",
+   "P@10": 0.9,
+   "Recall@100": 1.0,
+   "AP": 0.8965,
+   "nDCG@10": 0.9052
+  },
+  {
+   "qid": "Q16",
+   "system": "Hybrid RRF",
+   "P@10": 0.9,
+   "Recall@100": 1.0,
+   "AP": 0.9507,
+   "nDCG@10": 0.9337
+  },
+  {
+   "qid": "Q17",
+   "system": "TF-IDF",
+   "P@10": 0.5,
+   "Recall@100": 1.0,
+   "AP": 0.4598,
+   "nDCG@10": 0.4925
+  },
+  {
+   "qid": "Q17",
+   "system": "BM25",
+   "P@10": 0.4,
+   "Recall@100": 1.0,
+   "AP": 0.4342,
+   "nDCG@10": 0.4131
+  },
+  {
+   "qid": "Q17",
+   "system": "Sentence Transformer",
+   "P@10": 0.7,
+   "Recall@100": 1.0,
+   "AP": 0.5457,
+   "nDCG@10": 0.477
+  },
+  {
+   "qid": "Q17",
+   "system": "Hybrid RRF",
+   "P@10": 0.6,
+   "Recall@100": 1.0,
+   "AP": 0.5125,
+   "nDCG@10": 0.4057
+  },
+  {
+   "qid": "Q18",
+   "system": "TF-IDF",
+   "P@10": 0.7,
+   "Recall@100": 1.0,
+   "AP": 0.7015,
+   "nDCG@10": 0.8237
+  },
+  {
+   "qid": "Q18",
+   "system": "BM25",
+   "P@10": 0.6,
+   "Recall@100": 1.0,
+   "AP": 0.6807,
+   "nDCG@10": 0.732
+  },
+  {
+   "qid": "Q18",
+   "system": "Sentence Transformer",
+   "P@10": 0.6,
+   "Recall@100": 1.0,
+   "AP": 0.6753,
+   "nDCG@10": 0.7362
+  },
+  {
+   "qid": "Q18",
+   "system": "Hybrid RRF",
+   "P@10": 0.7,
+   "Recall@100": 1.0,
+   "AP": 0.7039,
+   "nDCG@10": 0.7899
+  },
+  {
+   "qid": "Q19",
+   "system": "TF-IDF",
+   "P@10": 0.3,
+   "Recall@100": 1.0,
+   "AP": 1.0,
+   "nDCG@10": 1.0
+  },
+  {
+   "qid": "Q19",
+   "system": "BM25",
+   "P@10": 0.3,
+   "Recall@100": 1.0,
+   "AP": 1.0,
+   "nDCG@10": 0.8213
+  },
+  {
+   "qid": "Q19",
+   "system": "Sentence Transformer",
+   "P@10": 0.3,
+   "Recall@100": 1.0,
+   "AP": 0.8667,
+   "nDCG@10": 0.9726
+  },
+  {
+   "qid": "Q19",
+   "system": "Hybrid RRF",
+   "P@10": 0.3,
+   "Recall@100": 1.0,
+   "AP": 1.0,
+   "nDCG@10": 0.8213
+  },
+  {
+   "qid": "Q20",
+   "system": "TF-IDF",
+   "P@10": 0.3,
+   "Recall@100": 0.5417,
+   "AP": 0.2019,
+   "nDCG@10": 0.2166
+  },
+  {
+   "qid": "Q20",
+   "system": "BM25",
+   "P@10": 0.4,
+   "Recall@100": 0.5833,
+   "AP": 0.2474,
+   "nDCG@10": 0.334
+  },
+  {
+   "qid": "Q20",
+   "system": "Sentence Transformer",
+   "P@10": 0.6,
+   "Recall@100": 0.9583,
+   "AP": 0.491,
+   "nDCG@10": 0.6072
+  },
+  {
+   "qid": "Q20",
+   "system": "Hybrid RRF",
+   "P@10": 0.4,
+   "Recall@100": 0.8333,
+   "AP": 0.3817,
+   "nDCG@10": 0.4568
+  },
+  {
+   "qid": "Q21",
+   "system": "TF-IDF",
+   "P@10": 0.8,
+   "Recall@100": 1.0,
+   "AP": 0.8232,
+   "nDCG@10": 0.9169
+  },
+  {
+   "qid": "Q21",
+   "system": "BM25",
+   "P@10": 0.8,
+   "Recall@100": 1.0,
+   "AP": 0.8639,
+   "nDCG@10": 0.9173
+  },
+  {
+   "qid": "Q21",
+   "system": "Sentence Transformer",
+   "P@10": 0.6,
+   "Recall@100": 1.0,
+   "AP": 0.7091,
+   "nDCG@10": 0.7915
+  },
+  {
+   "qid": "Q21",
+   "system": "Hybrid RRF",
+   "P@10": 0.8,
+   "Recall@100": 1.0,
+   "AP": 0.8552,
+   "nDCG@10": 0.9169
+  },
+  {
+   "qid": "Q22",
+   "system": "TF-IDF",
+   "P@10": 1.0,
+   "Recall@100": 0.8537,
+   "AP": 0.7007,
+   "nDCG@10": 0.8486
+  },
+  {
+   "qid": "Q22",
+   "system": "BM25",
+   "P@10": 1.0,
+   "Recall@100": 0.8537,
+   "AP": 0.7285,
+   "nDCG@10": 0.8112
+  },
+  {
+   "qid": "Q22",
+   "system": "Sentence Transformer",
+   "P@10": 1.0,
+   "Recall@100": 1.0,
+   "AP": 0.9314,
+   "nDCG@10": 1.0
+  },
+  {
+   "qid": "Q22",
+   "system": "Hybrid RRF",
+   "P@10": 1.0,
+   "Recall@100": 0.9756,
+   "AP": 0.8919,
+   "nDCG@10": 0.9511
+  },
+  {
+   "qid": "Q23",
+   "system": "TF-IDF",
+   "P@10": 1.0,
+   "Recall@100": 1.0,
+   "AP": 0.9197,
+   "nDCG@10": 0.9511
+  },
+  {
+   "qid": "Q23",
+   "system": "BM25",
+   "P@10": 0.9,
+   "Recall@100": 1.0,
+   "AP": 0.8975,
+   "nDCG@10": 0.8875
+  },
+  {
+   "qid": "Q23",
+   "system": "Sentence Transformer",
+   "P@10": 1.0,
+   "Recall@100": 1.0,
+   "AP": 0.94,
+   "nDCG@10": 0.9558
+  },
+  {
+   "qid": "Q23",
+   "system": "Hybrid RRF",
+   "P@10": 1.0,
+   "Recall@100": 1.0,
+   "AP": 0.9735,
+   "nDCG@10": 0.9537
+  },
+  {
+   "qid": "Q24",
+   "system": "TF-IDF",
+   "P@10": 0.6,
+   "Recall@100": 0.8125,
+   "AP": 0.4806,
+   "nDCG@10": 0.513
+  },
+  {
+   "qid": "Q24",
+   "system": "BM25",
+   "P@10": 0.6,
+   "Recall@100": 0.875,
+   "AP": 0.5962,
+   "nDCG@10": 0.5719
+  },
+  {
+   "qid": "Q24",
+   "system": "Sentence Transformer",
+   "P@10": 1.0,
+   "Recall@100": 1.0,
+   "AP": 0.9522,
+   "nDCG@10": 0.8533
+  },
+  {
+   "qid": "Q24",
+   "system": "Hybrid RRF",
+   "P@10": 1.0,
+   "Recall@100": 1.0,
+   "AP": 0.8817,
+   "nDCG@10": 0.8552
+  },
+  {
+   "qid": "Q25",
+   "system": "TF-IDF",
+   "P@10": 0.4,
+   "Recall@100": 0.5,
+   "AP": 0.2722,
+   "nDCG@10": 0.3266
+  },
+  {
+   "qid": "Q25",
+   "system": "BM25",
+   "P@10": 0.5,
+   "Recall@100": 0.5625,
+   "AP": 0.3541,
+   "nDCG@10": 0.3997
+  },
+  {
+   "qid": "Q25",
+   "system": "Sentence Transformer",
+   "P@10": 0.9,
+   "Recall@100": 1.0,
+   "AP": 0.8438,
+   "nDCG@10": 0.6601
+  },
+  {
+   "qid": "Q25",
+   "system": "Hybrid RRF",
+   "P@10": 0.7,
+   "Recall@100": 1.0,
+   "AP": 0.6346,
+   "nDCG@10": 0.5346
+  }
+ ],
+ "environment": {
+  "python": "3.14.6",
+  "platform": "macOS-26.7.1-arm64-arm-64bit-Mach-O",
+  "machine": "arm64",
+  "torch": "2.15.0",
+  "sentence_transformers": "6.3.0",
+  "scikit_learn": "1.9.1",
+  "pandas": "3.1.1",
+  "numpy": "2.5.4"
+ }
+}
