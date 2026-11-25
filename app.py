@@ -9,7 +9,7 @@ from pathlib import Path
 import pandas as pd
 import streamlit as st
 
-from bbcir.data import load_articles
+from bbcir.data import ensure_articles, load_articles
 from bbcir.engine import MODEL_NAMES, SearchEngine
 from bbcir.metrics import evaluate_run
 from bbcir.preprocess import preprocess
@@ -28,10 +28,12 @@ st.set_page_config(page_title="BBC News Retrieval", page_icon="📰", layout="wi
 st.markdown(ui.css(), unsafe_allow_html=True)
 
 
-@st.cache_resource(show_spinner="Building the inverted index, TF-IDF vectors and passage embeddings…")
+@st.cache_resource(show_spinner="Preparing the archive: BBC dataset, inverted index, TF-IDF vectors and "
+                                 "passage embeddings (about a minute on first start)…")
 def get_engine() -> SearchEngine:
+    ensure_articles()  # downloads and verifies the official release on a fresh deployment
     engine = SearchEngine(load_articles())
-    engine.run_all("warm-up query")  # the first encoder call pays a one-off GPU warm-up
+    engine.run_all("warm-up query")  # the first encoder call pays a one-off warm-up
     return engine
 
 
@@ -58,7 +60,13 @@ def use_example() -> None:
     st.session_state["example"] = None
 
 
-engine = get_engine()
+try:
+    engine = get_engine()
+except Exception as exc:  # e.g. the dataset server is unreachable
+    st.error(f"Could not prepare the BBC News archive: {exc}")
+    st.info("The app downloads the official dataset from mlg.ucd.ie on first start. Reload in a minute, or run "
+            "`python scripts/prepare_data.py data/raw/bbc` locally (see README).")
+    st.stop()
 html(ui.masthead(engine.n_docs, len(engine.index.vocabulary), engine.dense.n_passages))
 
 # ---------------------------------------------------------------- controls --
