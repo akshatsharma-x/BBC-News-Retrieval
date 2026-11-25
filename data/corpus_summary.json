@@ -1,0 +1,24 @@
+{
+  "raw_articles": 2225,
+  "exact_duplicates_removed": 99,
+  "unique_articles": 2126,
+  "raw_per_category": {
+    "business": 510,
+    "entertainment": 386,
+    "politics": 417,
+    "sport": 511,
+    "tech": 401
+  },
+  "unique_per_category": {
+    "business": 503,
+    "entertainment": 369,
+    "politics": 403,
+    "sport": 504,
+    "tech": 347
+  },
+  "body_words_mean": 378.9,
+  "body_words_median": 325.0,
+  "body_words_min": 84,
+  "body_words_max": 4428,
+  "duplicate_titles_remaining": 60
+}
