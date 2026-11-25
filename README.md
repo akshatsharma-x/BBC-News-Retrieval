@@ -9,7 +9,7 @@
 
 ![Search interface](outputs/figures/ui_search.png)
 
-🔎 **[Live search app](https://bbc-news-retrieval.streamlit.app)** · 🌐 [Project page](https://akshatsharma-x.github.io/BBC-News-Retrieval/) · 📄 [Report (PDF)](docs/BBC_News_Retrieval_Report.pdf) · 🎞️ [Slides (PDF)](docs/BBC_News_Retrieval_Presentation.pdf)
+🔎 **[Live search app](https://akshatsharma-x.github.io/BBC-News-Retrieval/app/)** · 🌐 [Project page](https://akshatsharma-x.github.io/BBC-News-Retrieval/) · 📄 [Report (PDF)](docs/BBC_News_Retrieval_Report.pdf) · 🎞️ [Slides (PDF)](docs/BBC_News_Retrieval_Presentation.pdf)
 
 Information Retrieval course project 12. It searches the official BBC News corpus (2,225 articles from
 2004–2005, 2,126 after de-duplication) with four rankers built over one inverted index:
@@ -46,6 +46,15 @@ Information Retrieval course project 12. It searches the official BBC News corpu
 - Hybrid RRF is the only model at the top of both tests. On the topics it ties the Sentence Transformer on MAP (not
   significant, p = 0.97); on known-item search it beats every other model (p < 0.001).
 - Hybrid search costs about 4 ms per query (median, Apple-silicon GPU); BM25 alone needs 58 µs.
+
+## Live app — runs entirely in your browser
+
+**[akshatsharma-x.github.io/BBC-News-Retrieval/app](https://akshatsharma-x.github.io/BBC-News-Retrieval/app/)** needs no
+server and no sign-in. `docs/app/` is a JavaScript port of the engine: the inverted index, TF-IDF, BM25 and RRF run on
+exported data, and the Sentence Transformer runs as a half-precision ONNX model through transformers.js, served from the
+site itself. Against the Python engine on the 25 topics, TF-IDF and BM25 match exactly and the neural models match MAP to
+3 decimals (worst single-topic difference 0.005 AP). The browser app shows headlines and opening lines only; full article
+text is not published.
 
 ## The interface
 
@@ -85,7 +94,10 @@ python scripts/build_site.py      # project page -> docs/index.html
 
 ## Deploy
 
-The repository is ready for [Streamlit Community Cloud](https://share.streamlit.io) (free):
+- **GitHub Pages (live):** served from `docs/` on `main`. Rebuild the browser app's data with
+  `python scripts/export_static.py`, then commit.
+- **Vercel or Netlify:** import the repository. `vercel.json` and `netlify.toml` serve `docs/` with no build step.
+- **Python app on Streamlit Community Cloud (optional):**
 
 1. Sign in at share.streamlit.io with GitHub and choose **Create app → Deploy a public app from GitHub**.
 2. Repository `akshatsharma-x/BBC-News-Retrieval`, branch `main`, main file `app.py`, custom URL `bbc-news-retrieval`.
@@ -128,10 +140,10 @@ report, section 2.4.
 | `bbcir/` | the retrieval toolkit: `data`, `preprocess`, `index`, `models`, `metrics`, `engine` |
 | `app.py`, `ui/`, `.streamlit/` | Streamlit interface, theme stylesheet, HTML components, Altair charts |
 | `data/` | `queries.json` (topics), `pool.json`, `qrels.json` (judgments) — ids only, no article text |
-| `scripts/` | data preparation, pooling, evaluation, figures, UI screenshots, project-site builder |
+| `scripts/` | data preparation, pooling, evaluation, figures, UI screenshots, project page and browser-app exporters |
 | `outputs/` | result tables (`*.csv`, `results.json`) and figures |
 | `report/` | generators for the report and slides (every claim is asserted against the results) |
-| `docs/` | GitHub Pages project site (`index.html`, `assets/`), the report (31-page PDF) and the presentation (20 slides, PPTX and PDF) |
+| `docs/` | GitHub Pages: project page (`index.html`), browser-only search app (`app/`: engine.js, app.js, data, ONNX model), report PDF and slides |
 
 ## Data and credits
 

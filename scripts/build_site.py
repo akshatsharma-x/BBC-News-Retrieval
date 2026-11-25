@@ -19,7 +19,7 @@ DOCS = ROOT / "docs"
 ASSETS = DOCS / "assets"
 FIG = ROOT / "outputs" / "figures"
 REPO_URL = "https://github.com/akshatsharma-x/BBC-News-Retrieval"
-LIVE_APP_URL = "https://bbc-news-retrieval.streamlit.app"
+LIVE_APP_URL = "app/"
 MODELS = ["TF-IDF", "BM25", "Sentence Transformer", "Hybrid RRF"]
 COLOR = {"TF-IDF": "#3987e5", "BM25": "#d95926", "Sentence Transformer": "#199e70", "Hybrid RRF": "#c98500"}
 
@@ -222,7 +222,7 @@ def main() -> None:
   <a class="brand" href="#">BBC News <em>Retrieval</em></a>
   <ul><li><a href="#models">Models</a></li><li><a href="#results">Results</a></li><li><a href="#interface">Interface</a></li>
   <li><a href="#how">How it works</a></li><li><a href="#documents">Documents</a></li><li><a href="#run">Run it</a></li></ul>
-  <a class="btn primary" href="{LIVE_APP_URL}" target="_blank" rel="noopener">Live app ↗</a>
+  <a class="btn primary" href="{LIVE_APP_URL}">Live app ↗</a>
 </div></nav>
 <main class="wrap">
 <header class="hero">
@@ -232,12 +232,12 @@ def main() -> None:
   <p class="lede">Lexical, semantic and hybrid search over {C['unique_articles']:,} BBC News stories from 2004–2005. Four rankers
   share one inverted index, and a purpose-built, graded test collection measures which one finds the right articles.</p>
   <div class="cta">
-    <a class="btn primary" href="{LIVE_APP_URL}" target="_blank" rel="noopener">Open the live search app ↗</a>
+    <a class="btn primary" href="{LIVE_APP_URL}">Open the live search app ↗</a>
     <a class="btn" href="{REPO_URL}" target="_blank" rel="noopener">View the code on GitHub</a>
     <a class="btn" href="BBC_News_Retrieval_Report.pdf">Read the report (PDF)</a>
   </div>
-  <p class="note">The live app runs on Streamlit Community Cloud. If nobody has used it for a while it sleeps, and the
-  first visit takes about a minute to wake it.</p>
+  <p class="note">The live app runs entirely in your browser — no server and no sign-in. The first visit downloads the
+  search index (about 8 MB) and the neural model (45 MB); both are cached for later visits.</p>
   <div class="ticker"><span><b>{C['unique_articles']:,}</b> articles</span><span><b>5</b> news desks</span>
   <span><b>{I['vocabulary_terms']:,}</b> index terms</span><span><b>{D['passages']:,}</b> embedded passages</span>
   <span><b>4</b> ranking models</span><span><b>≈{L['Hybrid RRF']:.0f} ms</b> per hybrid query</span></div>
@@ -316,7 +316,8 @@ def main() -> None:
 <section id="run">
   <span class="kicker">Run it yourself</span>
   <h2>Three commands</h2>
-  <p class="sub">The app downloads and verifies the official dataset on first start; the BBC article text is not stored in the repository.</p>
+  <p class="sub">The Python version (Streamlit) downloads and verifies the official dataset on first start; the BBC article
+  text is not stored in the repository. The browser app shows headlines and opening lines only.</p>
 <pre><span class="c"># clone and install</span>
 git clone {REPO_URL}.git && cd BBC-News-Retrieval
 python -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt
