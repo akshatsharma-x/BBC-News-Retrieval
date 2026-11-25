@@ -11,7 +11,8 @@ data/bbc_articles.csv
 outputs/pool_for_judging.txt
 
 # Generated artefacts
-outputs/cache/
+outputs/cache/*
+!outputs/cache/passages_33b31b57a2f914be.npy
 outputs/evaluation_log.txt
 outputs/figures/equations/
 
