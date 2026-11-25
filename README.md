@@ -9,7 +9,7 @@
 
 ![Search interface](outputs/figures/ui_search.png)
 
-📄 [Project report (PDF)](docs/BBC_News_Retrieval_Report.pdf) · 🎞️ [Presentation (PDF)](docs/BBC_News_Retrieval_Presentation.pdf)
+🔎 **[Live search app](https://bbc-news-retrieval.streamlit.app)** · 🌐 [Project page](https://akshatsharma-x.github.io/BBC-News-Retrieval/) · 📄 [Report (PDF)](docs/BBC_News_Retrieval_Report.pdf) · 🎞️ [Slides (PDF)](docs/BBC_News_Retrieval_Presentation.pdf)
 
 Information Retrieval course project 12. It searches the official BBC News corpus (2,225 articles from
 2004–2005, 2,126 after de-duplication) with four rankers built over one inverted index:
@@ -66,23 +66,33 @@ git clone https://github.com/akshatsharma-x/BBC-News-Retrieval.git && cd BBC-New
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 
-# BBC article text is © BBC and is not in this repository — download the official release:
-mkdir -p data/raw && curl -L -o data/raw/bbc-fulltext.zip http://mlg.ucd.ie/files/datasets/bbc-fulltext.zip
-unzip data/raw/bbc-fulltext.zip -d data/raw
-python scripts/prepare_data.py data/raw/bbc       # -> data/bbc_articles.csv (2,126 unique articles)
-
 streamlit run app.py                              # search interface at http://localhost:8501
 ```
 
-The first launch downloads the encoder (~90 MB) and embeds 7,146 passages (about 13 s on an Apple-silicon GPU,
-longer on CPU). Embeddings are cached in `outputs/cache/`.
+BBC article text is © BBC and is not stored in this repository. On first start the app downloads the official release
+from mlg.ucd.ie, verifies its SHA-256 checksum and rebuilds `data/bbc_articles.csv` (2,126 unique
+articles); it also downloads the encoder (~90 MB). Precomputed passage embeddings ship in `outputs/cache/`, so no
+encoding is needed. To prepare the data by hand instead, run `python scripts/prepare_data.py data/raw/bbc`.
 
-To reproduce every number and chart:
+To reproduce every number and chart (extra tools in `requirements-dev.txt`):
 
 ```bash
+pip install -r requirements-dev.txt
 python scripts/evaluate.py        # experiments -> outputs/*.csv, outputs/results.json
 python scripts/make_figures.py    # charts      -> outputs/figures/
+python scripts/build_site.py      # project page -> docs/index.html
 ```
+
+## Deploy
+
+The repository is ready for [Streamlit Community Cloud](https://share.streamlit.io) (free):
+
+1. Sign in at share.streamlit.io with GitHub and choose **Create app → Deploy a public app from GitHub**.
+2. Repository `akshatsharma-x/BBC-News-Retrieval`, branch `main`, main file `app.py`, custom URL `bbc-news-retrieval`.
+3. Under **Advanced settings** pick Python **3.12** or **3.13** (CPU-only PyTorch wheels are pinned for 3.11–3.13), then **Deploy**.
+
+The first boot installs dependencies and downloads the data and model, which takes a few minutes. Later cold starts take
+about a minute. The project page in `docs/` is served by GitHub Pages from the `main` branch.
 
 ## How it works
 
@@ -118,10 +128,10 @@ report, section 2.4.
 | `bbcir/` | the retrieval toolkit: `data`, `preprocess`, `index`, `models`, `metrics`, `engine` |
 | `app.py`, `ui/`, `.streamlit/` | Streamlit interface, theme stylesheet, HTML components, Altair charts |
 | `data/` | `queries.json` (topics), `pool.json`, `qrels.json` (judgments) — ids only, no article text |
-| `scripts/` | data preparation, pooling, evaluation, figures, UI screenshots |
+| `scripts/` | data preparation, pooling, evaluation, figures, UI screenshots, project-site builder |
 | `outputs/` | result tables (`*.csv`, `results.json`) and figures |
 | `report/` | generators for the report and slides (every claim is asserted against the results) |
-| `docs/` | the project report (31-page PDF) and presentation (20 slides, PPTX and PDF) |
+| `docs/` | GitHub Pages project site (`index.html`, `assets/`), the report (31-page PDF) and the presentation (20 slides, PPTX and PDF) |
 
 ## Data and credits
 
