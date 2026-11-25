@@ -1,115 +1,171 @@
-"""BBC News Retrieval - Streamlit search interface.
+"""BBC News Retrieval - Streamlit search interface ("night desk" editorial theme).
 
 Run:  streamlit run app.py
 """
-import html
+import json
+from collections import Counter
 from pathlib import Path
 
 import pandas as pd
 import streamlit as st
 
-from bbcir.data import CATEGORY_LABEL, load_articles
+from bbcir.data import load_articles
 from bbcir.engine import MODEL_NAMES, SearchEngine
+from bbcir.metrics import evaluate_run
 from bbcir.preprocess import preprocess
+from ui import charts
+from ui import components as ui
 
 ROOT = Path(__file__).resolve().parent
 OUT = ROOT / "outputs"
-MODEL_HELP = {
-    "TF-IDF": "Vector-space model: sublinear TF × IDF weights, cosine similarity.",
-    "BM25": "Okapi BM25 over the inverted index (k1 = 1.2, b = 0.75).",
-    "Sentence Transformer": "all-MiniLM-L6-v2 passage embeddings, max-passage cosine similarity.",
-    "Hybrid RRF": "Reciprocal Rank Fusion of BM25 and the Sentence Transformer (k = 60).",
-}
-MODEL_COLOR = {"TF-IDF": "#2a78d6", "BM25": "#eb6834", "Sentence Transformer": "#1baf7a", "Hybrid RRF": "#eda100"}
-EXAMPLES = ["films that took the most money at cinemas", "Yukos oil company tax dispute",
-            "fraudsters tricking people into revealing bank details online", "Australian Open tennis"]
+REPO_URL = "https://github.com/akshatsharma-x/BBC-News-Retrieval"
+EXAMPLES = ["films that took the most money at cinemas", "why the American currency is losing value",
+            "Yukos oil company tax dispute", "fraudsters tricking people into revealing bank details online",
+            "Australian Open tennis"]
 
-st.set_page_config(page_title="BBC News Retrieval", page_icon="📰", layout="wide")
-st.markdown("""
-<style>
-  .block-container {padding-top: 2.2rem; max-width: 1180px;}
-  .hero h1 {font-size: 2.0rem; margin-bottom: 0.1rem;}
-  .hero p {color: #52514e; margin-top: 0;}
-  .result {border: 1px solid #e6e6e1; border-radius: 10px; padding: 14px 18px; margin-bottom: 10px; background: #fff;}
-  .result .meta {font-size: 0.8rem; color: #6f6e69; margin-bottom: 4px;}
-  .result .title {font-size: 1.08rem; font-weight: 650; color: #0b0b0b; margin-bottom: 6px;}
-  .result .snippet {font-size: 0.92rem; color: #2b2b2a; line-height: 1.5;}
-  .result mark {background: #fde9b8; padding: 0 2px; border-radius: 3px;}
-  .badge {display: inline-block; font-size: 0.72rem; font-weight: 600; padding: 1px 8px; border-radius: 999px;
-          background: #f0efec; color: #3a3936; margin-right: 6px;}
-  .rank {display: inline-block; min-width: 26px; font-weight: 700; color: #0b0b0b;}
-  .dot {display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 6px;}
-  .cmp {font-size: 0.86rem; line-height: 1.35; margin-bottom: 8px;}
-  .cmp .n {color: #6f6e69; margin-right: 4px;}
-</style>
-""", unsafe_allow_html=True)
+st.set_page_config(page_title="BBC News Retrieval", page_icon="📰", layout="wide",
+                   initial_sidebar_state="collapsed")
+st.markdown(ui.css(), unsafe_allow_html=True)
 
 
-@st.cache_resource(show_spinner="Building inverted index, TF-IDF vectors and passage embeddings…")
+@st.cache_resource(show_spinner="Building the inverted index, TF-IDF vectors and passage embeddings…")
 def get_engine() -> SearchEngine:
-    return SearchEngine(load_articles())
+    engine = SearchEngine(load_articles())
+    engine.run_all("warm-up query")  # the first encoder call pays a one-off GPU warm-up
+    return engine
+
+
+@st.cache_data
+def load_benchmark():
+    if not (OUT / "results.json").exists():
+        return None
+    return (json.loads((OUT / "results.json").read_text()),
+            pd.read_csv(OUT / "metrics_summary.csv", index_col=0),
+            pd.read_csv(OUT / "precision_recall_11pt.csv"),
+            pd.read_csv(OUT / "metrics_by_query_style.csv"),
+            json.loads((ROOT / "data" / "queries.json").read_text()),
+            json.loads((ROOT / "data" / "qrels.json").read_text()))
+
+
+def html(markup: str, target=st) -> None:
+    target.markdown(markup, unsafe_allow_html=True)
+
+
+def use_example() -> None:
+    pick = st.session_state.get("example")
+    if pick:
+        st.session_state["query"] = pick
+    st.session_state["example"] = None
 
 
 engine = get_engine()
+html(ui.masthead(engine.n_docs, len(engine.index.vocabulary), engine.dense.n_passages))
 
-with st.sidebar:
-    st.header("Search settings")
-    model = st.radio("Ranking model", MODEL_NAMES, index=3, help="Choose the retrieval model")
-    st.caption(MODEL_HELP[model])
-    k = st.slider("Results to show", 5, 25, 10)
-    cats = st.multiselect("Filter by category", list(CATEGORY_LABEL), format_func=CATEGORY_LABEL.get)
-    st.divider()
-    st.subheader("Collection")
-    st.markdown(f"**{engine.n_docs:,}** unique BBC News articles (2004–05)  \n"
-                f"**{engine.index.stats()['vocabulary_terms']:,}** index terms  \n"
-                f"**{engine.dense.n_passages:,}** embedded passages")
+# ---------------------------------------------------------------- controls --
+st.session_state.setdefault("query", EXAMPLES[0])
+query = st.text_input("Search the archive", key="query",
+                      placeholder="Ask anything — e.g. why the American currency is losing value")
+st.pills("Try an example", EXAMPLES, key="example", on_change=use_example)
+c_model, c_k, c_desk = st.columns([1.62, 0.46, 1.58], vertical_alignment="bottom")
+with c_model:
+    model = st.segmented_control("Ranking model", MODEL_NAMES, default="Hybrid RRF", required=True, key="model")
+with c_k:
+    k = st.segmented_control("Results", [5, 10, 20], default=10, required=True, key="k")
+with c_desk:
+    desks = st.pills("Filter by desk", list(ui.DESK), selection_mode="multi", format_func=ui.FILTER_LABEL.get,
+                     key="desks")
 
-st.markdown('<div class="hero"><h1>📰 BBC News Retrieval</h1>'
-            '<p>Search 2,126 BBC News articles with lexical, semantic and hybrid ranking.</p></div>',
-            unsafe_allow_html=True)
-query = st.text_input("Search the archive", value=EXAMPLES[0], placeholder="e.g. " + EXAMPLES[1])
-st.caption("Try: " + " · ".join(f"*{e}*" for e in EXAMPLES[1:]))
+tab_search, tab_compare, tab_bench = st.tabs(["Search results", "Compare models", "Benchmark"])
 
-tab_results, tab_compare, tab_eval = st.tabs(["Search results", "Compare models", "Evaluation"])
-
-if query.strip():
-    with tab_results:
-        results = engine.search(query, model=model, k=k, categories=cats or None)
-        terms = preprocess(query)
-        st.markdown(f'<span class="dot" style="background:{MODEL_COLOR[model]}"></span>'
-                    f'**{model}** — {len(results)} results · query terms after preprocessing: '
-                    f'`{" ".join(terms) if terms else "(none)"}`', unsafe_allow_html=True)
-        for r in results:
-            score = f"{r['score']:.4f}" if model == "Hybrid RRF" else f"{r['score']:.3f}"
-            st.markdown(
-                f'<div class="result"><div class="meta"><span class="rank">#{r["rank"]}</span>'
-                f'<span class="badge">{CATEGORY_LABEL[r["category"]]}</span>{r["doc_id"]} · score {score}'
-                f'{" · matched: " + ", ".join(r["matched_terms"]) if r["matched_terms"] else ""}</div>'
-                f'<div class="title">{html.escape(r["title"])}</div>'
-                f'<div class="snippet">{r["snippet_html"]}</div></div>', unsafe_allow_html=True)
-            with st.expander("Read full article", expanded=False):
-                st.write(r["body"])
-
-    with tab_compare:
-        st.caption("Top-5 results from each model for the same query.")
-        cols = st.columns(4)
-        for col, m in zip(cols, MODEL_NAMES):
-            with col:
-                st.markdown(f'<span class="dot" style="background:{MODEL_COLOR[m]}"></span>**{m}**',
-                            unsafe_allow_html=True)
-                for r in engine.search(query, model=m, k=5, categories=cats or None):
-                    st.markdown(f'<div class="cmp"><span class="n">{r["rank"]}.</span>{html.escape(r["title"])}'
-                                f' <span class="badge">{CATEGORY_LABEL[r["category"]]}</span></div>',
-                                unsafe_allow_html=True)
-
-with tab_eval:
-    if (OUT / "metrics_summary.csv").exists():
-        tbl = pd.read_csv(OUT / "metrics_summary.csv", index_col=0)
-        tbl = tbl[["P@10", "Recall@100", "AP", "nDCG@10"]].rename(columns={"AP": "MAP"})
-        st.subheader("Performance comparison (25 queries, graded pooled judgments)")
-        st.dataframe(tbl.style.format("{:.4f}").highlight_max(axis=0, color="#fde9b8"), use_container_width=True)
-        c1, c2 = st.columns(2)
-        c1.image(str(OUT / "figures" / "metrics_bar_light.png"), caption="Metric comparison")
-        c2.image(str(OUT / "figures" / "pr_curve_light.png"), caption="11-point interpolated precision–recall")
+# ------------------------------------------------------------------ search --
+with tab_search:
+    if not query.strip():
+        html(ui.empty_state("Start with a query", "Type a topic, a name or a whole question above."))
     else:
-        st.info("Run `python scripts/evaluate.py` to generate the evaluation tables.")
+        results, elapsed = engine.search_all(query, k=k, categories=desks or None)
+        hits = results[model]
+        html(ui.runbar(model, len(hits), elapsed, preprocess(query)))
+        if hits:
+            top = max(r["score"] for r in hits)
+            html("".join(ui.result_card(r, model, top) for r in hits))
+        else:
+            html(ui.empty_state("No matching articles",
+                                "This model found nothing for the query and desk filter — try the Sentence "
+                                "Transformer or Hybrid RRF, which also match meaning rather than exact words."))
+
+# ----------------------------------------------------------------- compare --
+with tab_compare:
+    if query.strip():
+        top5, _ = engine.search_all(query, k=5, categories=desks or None)
+        agreement = Counter(d for m in MODEL_NAMES for d in {r["doc_id"] for r in top5[m]})
+        seen, all_four = set(), []
+        for m in MODEL_NAMES:
+            for r in top5[m]:
+                if agreement[r["doc_id"]] == 4 and r["doc_id"] not in seen:
+                    seen.add(r["doc_id"])
+                    all_four.append(r)
+        html(ui.consensus(all_four))
+        for col, m in zip(st.columns(4, gap="small"), MODEL_NAMES):
+            html(ui.desk_column(m, top5[m], agreement), col)
+
+# --------------------------------------------------------------- benchmark --
+with tab_bench:
+    bench = load_benchmark()
+    if bench is None:
+        st.info("Run `python scripts/evaluate.py` to generate the evaluation results.")
+    else:
+        res, main, pr, style_tbl, queries, qrels = bench
+        ki = pd.DataFrame(res["known_item"]["table"]).set_index("system")
+        html(ui.kpi_tiles([
+            (f"{main['AP'].max():.3f}", "Best MAP · 25 topics", main["AP"].idxmax()),
+            (f"{main['nDCG@10'].max():.3f}", "Best nDCG@10", main["nDCG@10"].idxmax()),
+            (f"{main['Recall@100'].max():.3f}", "Best Recall@100", main["Recall@100"].idxmax()),
+            (f"{ki['MRR'].max():.3f}", f"Known-item MRR · {res['known_item']['queries']:,} queries", ki["MRR"].idxmax()),
+        ]))
+        left, right = st.columns(2, gap="medium")
+        with left.container(border=True):
+            html('<div class="panel-title">Performance comparison</div>'
+                 '<div class="panel-sub">Macro-average over 25 graded topics · hover a bar for the exact score</div>')
+            st.altair_chart(charts.metric_bars(main, [("P@10", "P@10"), ("Recall@100", "Recall@100"),
+                                                      ("AP", "MAP"), ("nDCG@10", "nDCG@10")]),
+                            width="stretch", theme=None)
+        with right.container(border=True):
+            html('<div class="panel-title">Precision–recall curves</div>'
+                 '<div class="panel-sub">11-point interpolated precision · hover to compare models at a recall level</div>')
+            st.altair_chart(charts.pr_curve(pr), width="stretch", theme=None)
+        left, right = st.columns([1.15, 1], gap="medium")
+        with left.container(border=True):
+            html('<div class="panel-title">Results table</div><div class="panel-sub">Best value per column in bold</div>')
+            rows = {m: main.loc[m].to_dict() for m in MODEL_NAMES}
+            html(ui.metrics_table(rows, [("P@10", "P@10"), ("Recall@100", "R@100"), ("AP", "MAP"),
+                                         ("nDCG@10", "nDCG@10"), ("RR", "MRR")]))
+        with right.container(border=True):
+            html('<div class="panel-title">Keyword vs paraphrased queries</div>'
+                 '<div class="panel-sub">Lexical models lose most when the query avoids the article’s words</div>')
+            st.altair_chart(charts.style_bars(style_tbl), width="stretch", theme=None)
+
+        st.markdown("")
+        html('<div class="panel-title" style="font-size:1.25rem">Topic explorer</div>'
+             '<div class="panel-sub">Re-run any of the 25 test topics live and see each result’s relevance grade</div>')
+        qmap = {q["qid"]: q for q in queries}
+        e1, e2 = st.columns([2.2, 1.5], vertical_alignment="bottom")
+        qid = e1.selectbox("Test topic", list(qmap), index=6, format_func=lambda q: f"{q} · {qmap[q]['query']}")
+        e_model = e2.segmented_control("Model", MODEL_NAMES, default="Hybrid RRF", required=True, key="explorer_model")
+        judg = qrels[qid]
+        grades = Counter(judg.values())
+        html(ui.topic_card(qmap[qid], grades[2], grades[1], len(judg)))
+        runs = engine.run_all(qmap[qid]["query"], depth=1000)
+        ranked = {m: [engine.doc_ids[i] for i in runs[m][0]] for m in MODEL_NAMES}
+        live = {m: evaluate_run(ranked[m], judg) for m in MODEL_NAMES}
+        m1, m2 = st.columns([1, 1.35], gap="medium")
+        with m1.container(border=True):
+            html('<div class="panel-title">Live metrics for this topic</div>'
+                 '<div class="panel-sub">Computed now from the graded judgments</div>')
+            html(ui.metrics_table(live, [("P@10", "P@10"), ("AP", "AP"), ("nDCG@10", "nDCG@10")], digits=3))
+        with m2.container(border=True):
+            html(f'<div class="panel-title">{e_model} · top 10 with judgments</div>'
+                 '<div class="panel-sub">Judged blind from depth-20 pools plus a keyword sweep</div>')
+            titles = dict(zip(engine.doc_ids, engine.articles["title"]))
+            html(ui.judged_list([(i + 1, d, titles[d], judg.get(d)) for i, d in enumerate(ranked[e_model][:10])]))
+
+html(ui.footer(REPO_URL))
