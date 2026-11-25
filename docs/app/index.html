@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BBC News Retrieval — live search in your browser</title>
+<meta name="description" content="Search 2,126 BBC News articles with TF-IDF, BM25, a Sentence Transformer and Reciprocal Rank Fusion — all running in your browser.">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="app.css">
+<script defer src="https://cdn.jsdelivr.net/npm/vega@6.4.0"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/vega-lite@6.5.0"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/vega-embed@7.4.0"></script>
+</head>
+<body>
+<div class="page" id="app">
+  <header class="mast">
+    <div class="mast-row"><span class="kicker">Information Retrieval · Project 12</span>
+      <span class="edition">ARCHIVE EDITION · 2004 – 2005</span></div>
+    <h1 class="mast-title">BBC News <em>Retrieval</em></h1><div class="rule"></div>
+    <p class="mast-sub">Search 2,126 BBC stories with lexical, semantic and hybrid ranking. Every result is scored live
+      <b>in your browser</b> by TF-IDF, BM25, a Sentence Transformer and Reciprocal Rank Fusion.</p>
+    <div class="ticker" id="ticker"><span class="status warn" id="status">loading the index…</span></div>
+  </header>
+
+  <div class="field">
+    <label class="label" for="q">Search the archive</label>
+    <input class="search" id="q" type="search" autocomplete="off" spellcheck="false"
+           placeholder="Ask anything — e.g. why the American currency is losing value">
+  </div>
+  <span class="label">Try an example</span>
+  <div class="pills" id="examples"></div>
+  <div class="controls">
+    <div><span class="label" id="lbl-model">Ranking model</span><div class="seg" id="models" role="group" aria-labelledby="lbl-model"></div></div>
+    <div><span class="label" id="lbl-k">Results</span><div class="seg" id="ks" role="group" aria-labelledby="lbl-k"></div></div>
+    <div><span class="label" id="lbl-desk">Filter by desk</span><div class="pills" id="desks" role="group" aria-labelledby="lbl-desk"></div></div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" id="tab-search" aria-controls="panel-search" aria-selected="true">Search results</button>
+    <button class="tab" role="tab" id="tab-compare" aria-controls="panel-compare" aria-selected="false">Compare models</button>
+    <button class="tab" role="tab" id="tab-bench" aria-controls="panel-bench" aria-selected="false">Benchmark</button>
+  </div>
+  <section id="panel-search" role="tabpanel" aria-labelledby="tab-search"></section>
+  <section id="panel-compare" role="tabpanel" aria-labelledby="tab-compare" hidden></section>
+  <section id="panel-bench" role="tabpanel" aria-labelledby="tab-bench" hidden></section>
+
+  <div class="foot">
+    <span>Data: BBC News dataset — Greene &amp; Cunningham, ICML 2006 · articles © BBC (headlines and opening lines shown) ·
+      encoder: all-MiniLM-L6-v2 (ONNX, half precision) running in your browser</span>
+    <span><a href="../">Project page</a> · <a href="https://github.com/akshatsharma-x/BBC-News-Retrieval">Source on GitHub ↗</a></span>
+  </div>
+</div>
+<script type="module" src="app.js"></script>
+</body>
+</html>
