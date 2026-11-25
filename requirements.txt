@@ -1,20 +1,15 @@
-# Retrieval system and evaluation
+# Runtime dependencies of the search app and the evaluation scripts.
+# This is the file Streamlit Community Cloud installs. On x86-64 Linux (cloud hosts)
+# PyTorch comes from its CPU-only wheels, which avoids ~2 GB of CUDA libraries.
 numpy==2.5.4
 pandas==3.1.1
 scikit-learn==1.9.1
 nltk==3.10.4
-torch==2.15.0
+torch @ https://download.pytorch.org/whl/cpu/torch-2.15.0%2Bcpu-cp311-cp311-manylinux_2_28_x86_64.whl ; sys_platform == "linux" and platform_machine == "x86_64" and python_version == "3.11"
+torch @ https://download.pytorch.org/whl/cpu/torch-2.15.0%2Bcpu-cp312-cp312-manylinux_2_28_x86_64.whl ; sys_platform == "linux" and platform_machine == "x86_64" and python_version == "3.12"
+torch @ https://download.pytorch.org/whl/cpu/torch-2.15.0%2Bcpu-cp313-cp313-manylinux_2_28_x86_64.whl ; sys_platform == "linux" and platform_machine == "x86_64" and python_version == "3.13"
+torch==2.15.0 ; sys_platform != "linux" or platform_machine != "x86_64" or python_version < "3.11" or python_version >= "3.14"
 sentence-transformers==6.3.0
 transformers==5.22.2
-
-# Search interface and figures
 streamlit==1.67.0
 altair==6.3.0
-matplotlib==3.11.2
-pillow==13.0.0
-
-# Report / slide generation and interface screenshots (optional)
-python-docx==1.2.0
-python-pptx==1.0.2
-playwright==1.65.1
-pypdfium2==5.15.2
