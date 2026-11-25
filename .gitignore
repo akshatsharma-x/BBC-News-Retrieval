@@ -20,3 +20,7 @@ outputs/figures/equations/
 .vscode/
 .idea/
 .streamlit/secrets.toml
+
+# The Word-saved report carries the organisation's Office sensitivity label;
+# the repository publishes the PDF export instead (regenerate with report/build_report.py)
+docs/*.docx
