@@ -1,0 +1,21 @@
+{
+ "n_docs": 2126,
+ "avg_doc_len": 223.95860771401692,
+ "k1": 1.2,
+ "b": 0.75,
+ "rrf_k": 60,
+ "categories": [
+  "business",
+  "entertainment",
+  "politics",
+  "sport",
+  "tech"
+ ],
+ "n_terms": 20485,
+ "n_postings": 315438,
+ "n_passages": 7146,
+ "dim": 384,
+ "model": "Xenova/all-MiniLM-L6-v2",
+ "n_surface_forms": 29273,
+ "dtype": "fp16"
+}
