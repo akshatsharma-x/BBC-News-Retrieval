@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# BBC News article text is (c) BBC - download it with the steps in README.md
+data/raw/
+data/bbc_articles.csv
+outputs/pool_for_judging.txt
+
+# Generated artefacts
+outputs/cache/
+outputs/evaluation_log.txt
+outputs/figures/equations/
+
+# Local / editor files
+.DS_Store
+.vscode/
+.idea/
+.streamlit/secrets.toml

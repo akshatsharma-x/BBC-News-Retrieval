@@ -1,0 +1,19 @@
+# Retrieval system and evaluation
+numpy==2.5.4
+pandas==3.1.1
+scikit-learn==1.9.1
+nltk==3.10.4
+torch==2.15.0
+sentence-transformers==6.3.0
+transformers==5.22.2
+
+# Search interface and figures
+streamlit==1.67.0
+matplotlib==3.11.2
+pillow==13.0.0
+
+# Report / slide generation and interface screenshots (optional)
+python-docx==1.2.0
+python-pptx==1.0.2
+playwright==1.65.1
+pypdfium2==5.15.2
