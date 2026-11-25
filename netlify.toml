@@ -1,0 +1,16 @@
+# Netlify: serve the static site in docs/ (project page + browser-only search app).
+# base = "docs" keeps Netlify from installing the Python requirements at the repo root.
+[build]
+  base = "docs"
+  publish = "."
+  command = "echo 'static site - no build step'"
+
+[[headers]]
+  for = "/app/models/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/app/data/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
