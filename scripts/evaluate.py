@@ -21,7 +21,7 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from bbcir.data import DATA_DIR, load_articles  # noqa: E402
+from bbcir.data import DATA_DIR, ensure_articles, load_articles  # noqa: E402
 from bbcir.engine import MODEL_NAMES, SearchEngine  # noqa: E402
 from bbcir.metrics import (RECALL_LEVELS, evaluate_run, interpolated_pr,  # noqa: E402
                            paired_randomization_test)
@@ -61,6 +61,7 @@ def mean_table(per_query: pd.DataFrame, systems, metrics=METRICS) -> pd.DataFram
 
 def main() -> None:
     OUT.mkdir(exist_ok=True)
+    ensure_articles()  # downloads and verifies the official release if needed
     articles = load_articles()
     queries = json.loads((DATA_DIR / "queries.json").read_text())
     qrels = json.loads((DATA_DIR / "qrels.json").read_text())

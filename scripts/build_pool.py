@@ -13,12 +13,13 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from bbcir.data import DATA_DIR, load_articles  # noqa: E402
+from bbcir.data import DATA_DIR, ensure_articles, load_articles  # noqa: E402
 from bbcir.engine import SearchEngine  # noqa: E402
 from bbcir.models import rank  # noqa: E402
 
 
 def main(depth: int = 20) -> None:
+    ensure_articles()  # downloads and verifies the official release if needed
     articles = load_articles()
     engine = SearchEngine(articles)
     queries = json.loads((DATA_DIR / "queries.json").read_text())
